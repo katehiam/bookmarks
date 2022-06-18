@@ -257,17 +257,17 @@
 /**
  * Font family
  */
-@mixin code-next-font {
-  font-family: Code Next, Arial, Helvetica, sans-serif;
+@mixin cabin-font {
+  font-family: Cabin, Arial, Helvetica, sans-serif;
 }
 
 /**
  * H1
  */
 @mixin h1 {
-  @include code-next-font();
+  @include cabin-font();
 
-  font-weight: 300;
+  font-weight: 600;
   @include font-size(
     (
       phone: 34px,
@@ -282,9 +282,9 @@
  * H2
  */
 @mixin h2 {
-  @include code-next-font();
+  @include cabin-font();
 
-  font-weight: 300;
+  font-weight: 600;
   @include font-size(
     (
       phone: 24px,
@@ -299,7 +299,7 @@
  * Body paragraph
  */
 @mixin para {
-  @include code-next-font();
+  @include cabin-font();
   @include font-size(
     (
       phone: 14px,
@@ -314,7 +314,7 @@
  * Small paragraph
  */
 @mixin para-small {
-  @include code-next-font();
+  @include cabin-font();
   @include font-size(
     (
       phone: 12px,

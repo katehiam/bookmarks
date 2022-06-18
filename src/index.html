@@ -10,56 +10,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <header>
+    <header class="header">
       <a href="/">Home</a>
     </header>
     <main>
       <div class="overview-page">
-        <form class="add-bookmark-form">
-          <fieldset>
-            <legend>Add bookmark</legend>
-            <div class="field">
-              <label for="name">
-                Name:
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  data-validation-required
-                />
-              </label>
-              <div class="field-error"></div>
-            </div>
-            <div class="field">
-              <label for="url">
-                Url:
-                <input
-                  type="text"
-                  id="url"
-                  name="url"
-                  data-validation-required
-                  data-validation-url
-                />
-              </label>
-              <div class="field-error"></div>
-            </div>
-            <button>Add</button>
-          </fieldset>
-        </form>
-        <ul class="bookmarks"></ul>
-        <div class="pagination"></div>
+        <div class="container">
+          <div class="intro">
+            <h1>Welcome to Bookmark List</h1>
+          </div>
+        </div>
+        <div class="container">
+          <form class="form add-bookmark-form">
+            <fieldset>
+              <legend>Add bookmark</legend>
+              <div class="field">
+                <label for="name">
+                  Name:
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    data-validation-required
+                  />
+                </label>
+                <div class="field-error"></div>
+              </div>
+              <div class="field">
+                <label for="url">
+                  Url:
+                  <input
+                    type="text"
+                    id="url"
+                    name="url"
+                    data-validation-required
+                    data-validation-url
+                  />
+                </label>
+                <div class="field-error"></div>
+              </div>
+              <button>Add</button>
+            </fieldset>
+          </form>
+        </div>
+        <div class="container">
+          <ul class="bookmarks"></ul>
+          <div class="pagination"></div>
+        </div>
       </div>
       <div class="success-page hide">
-        <h1>Thank you for submitting!</h1>
-        <p>
-          You added bookmark <strong><span class="success-bookmark-name"></span></strong> which
-          links to <strong><span class="success-bookmark-url"></strong></span>.
-        </p>
-        <a href="/">Back to home</a>
+        <div class="container">
+          <div class="success">
+            <h1>Thank you for submitting!</h1>
+            <p>
+              You added bookmark <strong><span class="success-bookmark-name"></span></strong> which
+              links to <strong><span class="success-bookmark-url"></strong></span>.
+            </p>
+            <a href="/">Back to home</a>
+          </div>
+        </div>
       </div>
     </main>
-    <footer>
-      <div><p>© Kate Scherz</p></div>
+    <footer class="footer">
+      <div><p>© 2022 Kate Scherz</p></div>
     </footer>
   </body>
 </html>
