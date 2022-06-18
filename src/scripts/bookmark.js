@@ -180,6 +180,8 @@ class Bookmark {
       link.innerHTML = this.name;
       link.href = this.url;
 
+      this.hideEditPanel();
+
       this.onUpdate();
     };
   };
