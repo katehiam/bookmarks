@@ -28,6 +28,7 @@ class App {
     }
 
     // Pagination
+    this.paginationLinks = [];
     this.currentPageNumber = this.getCurrentPageNumber();
     this.pagination = document.querySelector('.pagination');
 
@@ -146,6 +147,7 @@ class App {
         this.navigateToPage(this.currentPageNumber - 1);
       };
       pageLinkPrevious.appendTo(this.pagination);
+      this.paginationLinks.push(pageLinkPrevious);
     }
 
     // Create paginated links
@@ -158,6 +160,7 @@ class App {
         this.navigateToPage(i + 1);
       };
       pageLink.appendTo(this.pagination);
+      this.paginationLinks.push(pageLink);
     }
 
     // Create next page link
@@ -169,6 +172,7 @@ class App {
         this.navigateToPage(this.currentPageNumber + 1);
       };
       pageLinkNext.appendTo(this.pagination);
+      this.paginationLinks.push(pageLinkNext);
     }
   };
 
@@ -205,7 +209,14 @@ class App {
     this.bookmarksDisplayElement.innerHTML = '';
     this.addBookmarksToPage();
     // Remove pagination DOM elements and render again with updated content
-    this.pagination.innerHTML = '';
+    for (const link of this.paginationLinks) {
+      // Remove DOM element and clean up
+      link.remove();
+      // Remove link from this.paginationLinks
+      const indexOfLink = this.paginationLinks.indexOf(link);
+      if (indexOfLink === -1) return;
+      this.paginationLinks.splice(indexOfLink, 1);
+    }
     this.makePagination();
     // Update url history
     if (

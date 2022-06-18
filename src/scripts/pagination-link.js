@@ -50,6 +50,14 @@ class PaginationLink {
   /**
    * Clean up.
    */
+  remove = () => {
+    this.destroy();
+    this.linkElement.remove();
+  };
+
+  /**
+   * Clean up.
+   */
   destroy = () => {
     this.linkElement.removeEventListener('click', this.handleClick);
   };

@@ -222,7 +222,6 @@ class Bookmark {
    * Remove relative DOM element.
    */
   remove = () => {
-    this.bookmarkElement.remove();
     this.editForm.destroy();
     this.editForm.form
       .querySelector('.bookmarks__bookmark__button--delete')
@@ -233,6 +232,7 @@ class Bookmark {
     this.editForm.form
       .querySelector('.form__button--cancel')
       .removeEventListener('click', this.handleEditCancel);
+    this.bookmarkElement.remove();
     this.onRemove();
   };
 }
