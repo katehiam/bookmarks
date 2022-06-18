@@ -13,14 +13,26 @@ class App {
     this.bookmarks = new Set();
     this.bookmarksDisplayElement = document.querySelector('.bookmarks');
     this.form = new Form(document.querySelector('.add-bookmark-form'));
+    this.form.onSuccess = (data) => {
+      this.createNewBookmark(data.get('name'), data.get('url'));
+    };
 
     for (const {name, url} of initialBookmarks) {
-      const newBookmark = new Bookmark(name, url);
-      this.bookmarks.add(newBookmark);
-      newBookmark.appendTo(this.bookmarksDisplayElement);
-      newBookmark.onRemove(() => this.bookmarks.delete(newBookmark));
+      this.createNewBookmark(name, url);
     }
   }
+
+  /**
+   * Create new bookmark instance.
+   * @param {string} name Custom name for bookmark
+   * @param {string} url URL of website to bookmark
+   */
+  createNewBookmark = (name, url) => {
+    const newBookmark = new Bookmark(name, url);
+    this.bookmarks.add(newBookmark);
+    newBookmark.appendTo(this.bookmarksDisplayElement);
+    newBookmark.onRemove(() => this.bookmarks.delete(newBookmark));
+  };
 }
 
 export {App};

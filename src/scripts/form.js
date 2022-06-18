@@ -15,6 +15,7 @@ class Form {
     this.formErrors = errorsElement || formElement.querySelector('.errors');
     const domFields = Array.from(this.form.querySelectorAll('input, textarea'));
     this.fields = [];
+    this.onSuccess = () => {};
 
     for (const field of domFields) {
       this.fields.push(new Field(field));
@@ -29,16 +30,26 @@ class Form {
     e.preventDefault();
     if (!this.validate()) return;
 
-    // const formData = new FormData(this.form);
-    // TODO create new bookmark
+    const formData = new FormData(this.form);
+    this.onSuccess(formData);
+    for (const field of this.fields) {
+      field.clear();
+    }
     // TODO go to submit success page
   };
 
   /**
    * Validate all form fields.
+   * @return {boolean}
    */
   validate = () => {
     // TODO validation
+    let valid = true;
+    for (const field of this.fields) {
+      if (!field.validate) valid = false;
+    }
+
+    return valid;
   };
 }
 

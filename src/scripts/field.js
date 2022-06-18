@@ -31,6 +31,14 @@ class Field {
   };
 
   /**
+   * Clear errors and value of field.
+   */
+  clear = () => {
+    this.field.value = '';
+    this.clearErrors();
+  };
+
+  /**
    * Clear errors on field.
    */
   clearErrors = () => {
