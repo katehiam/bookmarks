@@ -378,9 +378,12 @@
   color: $white;
   text-decoration: none;
   border-bottom: 1px solid $white;
+  transition: color $ease-in-out-cubic 0.2s,
+    border-color $ease-in-out-cubic 0.2s;
 
   @include on-hover() {
-    opacity: 0.5;
+    color: $fade-strong;
+    border-bottom: 1px solid $fade-strong;
   }
 }
 

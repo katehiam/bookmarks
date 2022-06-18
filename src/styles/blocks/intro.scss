@@ -1,7 +1,7 @@
 .intro {
   @include spacing(padding-top, 9);
   @include spacing(padding-bottom, 9);
-  @include rich-text();
+  @include rich-text;
   grid-column: 5 / -5;
 
   @include media($tablet) {
