@@ -61,6 +61,7 @@ class Bookmark {
     bookmarkEditNameField.id = `${this.identifier}-name`;
     bookmarkEditNameField.name = 'name';
     bookmarkEditNameField.value = this.name;
+    bookmarkEditNameField.dataset.validationRequired = true;
 
     const bookmarkEditNameLabel = document.createElement('label');
     bookmarkEditNameLabel.for = `${this.identifier}-name`;
@@ -80,6 +81,8 @@ class Bookmark {
     bookmarkEditUrlField.id = `${this.identifier}-url`;
     bookmarkEditUrlField.name = 'url';
     bookmarkEditUrlField.value = this.url;
+    bookmarkEditUrlField.dataset.validationRequired = true;
+    bookmarkEditUrlField.dataset.validationUrl = true;
 
     const bookmarkEditUrlLabel = document.createElement('label');
     bookmarkEditUrlLabel.for = `${this.identifier}-url`;

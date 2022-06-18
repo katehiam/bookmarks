@@ -19,13 +19,26 @@
           <legend>Add bookmark</legend>
           <div class="field">
             <label for="name">
-              Name: <input type="text" id="name" name="name" />
+              Name:
+              <input
+                type="text"
+                id="name"
+                name="name"
+                data-validation-required
+              />
             </label>
             <div class="field-error"></div>
           </div>
           <div class="field">
             <label for="url">
-              Url: <input type="text" id="url" name="url" />
+              Url:
+              <input
+                type="text"
+                id="url"
+                name="url"
+                data-validation-required
+                data-validation-url
+              />
             </label>
             <div class="field-error"></div>
           </div>

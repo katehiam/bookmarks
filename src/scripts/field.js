@@ -12,6 +12,14 @@ class Field {
     this.originalValue = this.field.value;
     this.errorElement = errorElement;
     this.errors = [];
+    this.validationChecks = [];
+    const {validationRequired, validationUrl} = this.field.dataset;
+    if (validationRequired !== undefined) {
+      this.validationChecks.push('required');
+    }
+    if (validationUrl !== undefined) {
+      this.validationChecks.push('url');
+    }
 
     this.field.addEventListener('focus', this.handleFieldFocus);
     this.field.addEventListener('blur', this.handleFieldBlur);
@@ -56,6 +64,19 @@ class Field {
   };
 
   /**
+   * Check if value is URL.
+   * @return {boolean} Whether field is valid or not.
+   */
+  checkIsUrl = () => {
+    try {
+      new URL(this.field.value);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  /**
    * Validate field.
    * @return {boolean} Whether field is valid or not.
    */
@@ -63,9 +84,21 @@ class Field {
     this.clearErrors();
     let valid = true;
 
-    if (!this.checkExists()) {
-      valid = false;
-      this.errors.push({message: 'This field is required.'});
+    for (const validationCheck of this.validationChecks) {
+      switch (validationCheck) {
+        case 'required':
+          if (!this.checkExists()) {
+            valid = false;
+            this.errors.push({message: 'This field is required.'});
+          }
+          break;
+        case 'url':
+          if (!this.checkIsUrl()) {
+            valid = false;
+            this.errors.push({message: 'This field must be a valid URL.'});
+          }
+          break;
+      }
     }
 
     for (const error of this.errors) {
