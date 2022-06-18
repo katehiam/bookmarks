@@ -7,7 +7,7 @@ class Field {
    * @param {HTMLElement} fieldElement DOM element of field
    * @param {HTMLElement} errorElement DOM element of field error
    */
-  constructor(fieldElement, errorElement) {
+  constructor(fieldElement, errorElement = null) {
     this.field = fieldElement;
     this.originalValue = this.field.value;
     this.errorElement = errorElement;
@@ -44,6 +44,15 @@ class Field {
    */
   clearErrors = () => {
     this.errors = [];
+    if (this.errorElement) this.errorElement.innerHTML = '';
+  };
+
+  /**
+   * Check if value exists.
+   * @return {boolean} Whether field is valid or not.
+   */
+  checkExists = () => {
+    return !!this.field.value || this.field.value !== '';
   };
 
   /**
@@ -51,9 +60,21 @@ class Field {
    * @return {boolean} Whether field is valid or not.
    */
   validate = () => {
-    // TODO validation
+    this.clearErrors();
+    let valid = true;
 
-    return true;
+    if (!this.checkExists()) {
+      valid = false;
+      this.errors.push({message: 'This field is required.'});
+    }
+
+    for (const error of this.errors) {
+      const newErrorMessage = document.createElement('p');
+      newErrorMessage.innerHTML = error.message;
+      if (this.errorElement) this.errorElement.appendChild(newErrorMessage);
+    }
+
+    return valid;
   };
 }
 

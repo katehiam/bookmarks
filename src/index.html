@@ -17,12 +17,18 @@
       <form class="add-bookmark-form">
         <fieldset>
           <legend>Add bookmark</legend>
-          <label for="name">
-            Name: <input type="text" id="name" name="name" />
-          </label>
-          <label for="url">
-            Url: <input type="text" id="url" name="url" />
-          </label>
+          <div class="field">
+            <label for="name">
+              Name: <input type="text" id="name" name="name" />
+            </label>
+            <div class="field-error"></div>
+          </div>
+          <div class="field">
+            <label for="url">
+              Url: <input type="text" id="url" name="url" />
+            </label>
+            <div class="field-error"></div>
+          </div>
           <button>Add</button>
         </fieldset>
       </form>

@@ -67,6 +67,14 @@ class Bookmark {
     bookmarkEditNameLabel.innerHTML = 'Name: ';
     bookmarkEditNameLabel.appendChild(bookmarkEditNameField);
 
+    const bookmarkEditNameError = document.createElement('div');
+    bookmarkEditNameError.classList.add('field-error');
+
+    const bookmarkEditNameWrapper = document.createElement('div');
+    bookmarkEditNameWrapper.classList.add('field');
+    bookmarkEditNameWrapper.appendChild(bookmarkEditNameLabel);
+    bookmarkEditNameWrapper.appendChild(bookmarkEditNameError);
+
     const bookmarkEditUrlField = document.createElement('input');
     bookmarkEditUrlField.type = 'text';
     bookmarkEditUrlField.id = `${this.identifier}-url`;
@@ -78,6 +86,14 @@ class Bookmark {
     bookmarkEditUrlLabel.innerHTML = 'Url: ';
     bookmarkEditUrlLabel.appendChild(bookmarkEditUrlField);
 
+    const bookmarkEditUrlError = document.createElement('div');
+    bookmarkEditUrlError.classList.add('field-error');
+
+    const bookmarkEditUrlWrapper = document.createElement('div');
+    bookmarkEditUrlWrapper.classList.add('field');
+    bookmarkEditUrlWrapper.appendChild(bookmarkEditUrlLabel);
+    bookmarkEditUrlWrapper.appendChild(bookmarkEditUrlError);
+
     const bookmarkEditSubmitButton = document.createElement('button');
     bookmarkEditSubmitButton.innerHTML = 'Update';
 
@@ -88,8 +104,8 @@ class Bookmark {
 
     const bookmarkEditFormFieldset = document.createElement('fieldset');
     bookmarkEditFormFieldset.appendChild(bookmarkEditFormLegend);
-    bookmarkEditFormFieldset.appendChild(bookmarkEditNameLabel);
-    bookmarkEditFormFieldset.appendChild(bookmarkEditUrlLabel);
+    bookmarkEditFormFieldset.appendChild(bookmarkEditNameWrapper);
+    bookmarkEditFormFieldset.appendChild(bookmarkEditUrlWrapper);
     bookmarkEditFormFieldset.appendChild(bookmarkEditSubmitButton);
     bookmarkEditFormFieldset.appendChild(bookmarkEditCancelButton);
 
