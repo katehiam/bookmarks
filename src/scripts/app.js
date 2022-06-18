@@ -17,21 +17,17 @@ class App {
     this.showCorrectPage();
 
     // Bookmarks
-    const initialBookmarks = [
-      {name: 'Google', url: 'https://www.google.com'},
-      {name: 'Google', url: 'https://www.google.com'},
-      {name: 'Google', url: 'https://www.google.com'},
-    ]; // TODO Replace with persisted links
-    this.bookmarks = new Set();
+    const storedBookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+    this.bookmarks = [];
 
     this.bookmarksDisplayElement = document.querySelector('.bookmarks');
 
-    for (const {name, url} of initialBookmarks) {
+    for (const {name, url} of storedBookmarks) {
       this.createNewBookmark(name, url);
     }
 
     this.currentPageNumber = 1;
-    this.numberPages = Math.ceil(this.bookmarks.size / BOOKMARKS_PER_PAGE);
+    this.numberPages = Math.ceil(this.bookmarks.length / BOOKMARKS_PER_PAGE);
     this.pagination = document.querySelector('.pagination');
     this.makePagination();
     this.addBookmarksToPage();
@@ -42,7 +38,8 @@ class App {
       const name = data.get('name');
       const url = data.get('url');
       this.createNewBookmark(name, url);
-      this.form.reset();
+
+      localStorage.setItem('bookmarks', JSON.stringify(this.bookmarks));
 
       // Show correct details on success page
       this.successPage.querySelector('.success-bookmark-name').innerHTML = name;
@@ -58,7 +55,7 @@ class App {
    */
   createNewBookmark = (name, url) => {
     const newBookmark = new Bookmark(name, url);
-    this.bookmarks.add(newBookmark);
+    this.bookmarks[this.bookmarks.length] = newBookmark;
     newBookmark.onRemove(() => this.bookmarks.delete(newBookmark));
   };
 
