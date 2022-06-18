@@ -11,7 +11,9 @@ class Form {
   constructor(formElement) {
     this.form = formElement;
     this.form.addEventListener('submit', this.handleSubmit);
-    const domFields = Array.from(this.form.querySelectorAll('.form__field'));
+    const domFields = Array.from(
+      this.form.querySelectorAll('.form__field__input'),
+    );
     this.fields = [];
     this.onSuccess = () => {};
 
@@ -55,6 +57,18 @@ class Form {
     }
 
     return valid;
+  };
+
+  /**
+   * Clean up.
+   */
+  destroy = () => {
+    this.form.removeEventListener('submit', this.handleSubmit);
+
+    for (const field of this.fields) {
+      field.removeEventListener('focus', this.handleFieldFocus);
+      field.removeEventListener('blur', this.handleFieldBlur);
+    }
   };
 }
 

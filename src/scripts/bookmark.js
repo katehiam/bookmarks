@@ -113,7 +113,6 @@ class Bookmark {
     bookmarkEditSubmitButton.innerHTML = 'Update';
 
     const bookmarkEditCancelButton = document.createElement('button');
-    bookmarkEditCancelButton.classList.add('bookmarks__bookmark__form__button');
     bookmarkEditCancelButton.classList.add('form__button--cancel');
     bookmarkEditCancelButton.type = 'button';
     bookmarkEditCancelButton.innerHTML = 'Cancel';
@@ -224,6 +223,16 @@ class Bookmark {
    */
   remove = () => {
     this.bookmarkElement.remove();
+    this.editForm.destroy();
+    this.editForm.form
+      .querySelector('.bookmarks__bookmark__button--delete')
+      .removeEventListener('click', this.handleDeleteClick);
+    this.editForm.form
+      .querySelector('.bookmarks__bookmark__button--edit')
+      .removeEventListener('click', this.handleEditClick);
+    this.editForm.form
+      .querySelector('.form__button--cancel')
+      .removeEventListener('click', this.handleEditCancel);
     this.onRemove();
   };
 }

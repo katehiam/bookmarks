@@ -109,6 +109,14 @@ class Field {
 
     return valid;
   };
+
+  /**
+   * Clean up.
+   */
+  destroy = () => {
+    this.field.removeEventListener('focus', this.handleFieldFocus);
+    this.field.removeEventListener('blur', this.handleFieldBlur);
+  };
 }
 
 export {Field};
