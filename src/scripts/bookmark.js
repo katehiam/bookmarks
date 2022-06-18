@@ -5,7 +5,7 @@ import {Form} from './form';
  */
 class Bookmark {
   /**
-   * Initialise form interactions.
+   * Initialise bookmark instance.
    * @param {string} name Custom name for bookmark
    * @param {string} url URL of website to bookmark
    */

@@ -1,5 +1,6 @@
 import {Bookmark} from '@scripts/bookmark';
 import {Form} from '@scripts/form';
+import {PaginationLink} from './pagination-link';
 
 const BOOKMARKS_PER_PAGE = 5;
 
@@ -135,42 +136,39 @@ class App {
 
     // Create previous page link
     if (this.currentPageNumber > 1) {
-      const pageLinkPrevious = document.createElement('a');
-      pageLinkPrevious.innerHTML = 'Previous';
-      pageLinkPrevious.href =
+      const href =
         this.currentPageNumber - 1 === 1
           ? '/'
           : `/?page=${this.currentPageNumber - 1}`;
-      pageLinkPrevious.addEventListener('click', (e) => {
+      const pageLinkPrevious = new PaginationLink(href, 'Previous');
+      pageLinkPrevious.onClick = (e) => {
         e.preventDefault();
         this.navigateToPage(this.currentPageNumber - 1);
-      });
-      this.pagination.appendChild(pageLinkPrevious);
+      };
+      pageLinkPrevious.appendTo(this.pagination);
     }
 
     // Create paginated links
     for (let i = 0; i < this.numberPages; i++) {
       // append pagination
-      const pageLink = document.createElement('a');
-      pageLink.innerHTML = i + 1;
-      pageLink.href = i === 0 ? '/' : `/?page=${i + 1}`;
-      pageLink.addEventListener('click', (e) => {
+      const href = i === 0 ? '/' : `/?page=${i + 1}`;
+      const pageLink = new PaginationLink(href, i + 1);
+      pageLink.onClick = (e) => {
         e.preventDefault();
         this.navigateToPage(i + 1);
-      });
-      this.pagination.appendChild(pageLink);
+      };
+      pageLink.appendTo(this.pagination);
     }
 
     // Create next page link
     if (this.currentPageNumber < this.numberPages) {
-      const pageLinkNext = document.createElement('a');
-      pageLinkNext.innerHTML = 'Next';
-      pageLinkNext.href = `/?page=${this.currentPageNumber + 1}`;
-      pageLinkNext.addEventListener('click', (e) => {
+      const href = `/?page=${this.currentPageNumber + 1}`;
+      const pageLinkNext = new PaginationLink(href, 'Next');
+      pageLinkNext.onClick = (e) => {
         e.preventDefault();
         this.navigateToPage(this.currentPageNumber + 1);
-      });
-      this.pagination.appendChild(pageLinkNext);
+      };
+      pageLinkNext.appendTo(this.pagination);
     }
   };
 
