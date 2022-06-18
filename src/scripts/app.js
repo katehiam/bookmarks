@@ -21,10 +21,6 @@ class App {
     const storedBookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
     this.bookmarks = [];
 
-    console.log(
-      "document.querySelector('.bookmarks')",
-      document.querySelector('.bookmarks'),
-    );
     this.bookmarksDisplayElement = document.querySelector('.bookmarks');
 
     for (const {name, url} of storedBookmarks) {
