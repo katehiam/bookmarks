@@ -27,7 +27,9 @@ class App {
     }
 
     // Pagination
-    this.currentPageNumber = 1;
+    const queryString = window.location.search;
+    const searchParams = new URLSearchParams(queryString);
+    this.currentPageNumber = searchParams.get('page') || 1;
     this.pagination = document.querySelector('.pagination');
 
     // Forms
@@ -188,13 +190,19 @@ class App {
     // Remove pagination DOM elements and render again with updated content
     this.pagination.innerHTML = '';
     this.makePagination();
+    // Update url history
+    window.history.pushState(
+      {},
+      '',
+      `${pageNumber === 1 ? '/' : `/?page=${pageNumber}`}`,
+    );
   };
 
   /**
    * Show correct page.
    */
   showCorrectPage = () => {
-    if (window.location.pathname === '/#success') {
+    if (window.location.hash === '#success') {
       this.goToSuccessPage();
     } else {
       this.goToOverviewPage();
@@ -205,7 +213,8 @@ class App {
    * Go to success page.
    */
   goToSuccessPage = () => {
-    window.history.pushState({}, '', '/#success');
+    const queryString = window.location.search;
+    window.history.pushState({}, '', `/#success${queryString}`);
     this.overviewPage.classList.add('hide');
     this.successPage.classList.remove('hide');
   };
@@ -214,7 +223,8 @@ class App {
    * Go to overview page.
    */
   goToOverviewPage = () => {
-    window.history.pushState({}, '', '/');
+    const queryString = window.location.search;
+    window.history.pushState({}, '', `/${queryString}`);
     this.overviewPage.classList.remove('hide');
     this.successPage.classList.add('hide');
   };
