@@ -26,17 +26,17 @@ class App {
       this.createNewBookmark(name, url);
     }
 
+    // Pagination
     this.currentPageNumber = 1;
     this.pagination = document.querySelector('.pagination');
-    this.navigateToPage(this.currentPageNumber);
 
     // Forms
     this.form = new Form(document.querySelector('.add-bookmark-form'));
     this.form.onSuccess = (data) => {
+      // Create new Bookmark with form data and save to localStorage
       const name = data.get('name');
       const url = data.get('url');
       this.createNewBookmark(name, url);
-
       this.setLocalStorageToCurrentBookmarks();
 
       // Show correct details on success page
@@ -44,6 +44,9 @@ class App {
       this.successPage.querySelector('.success-bookmark-url').innerHTML = url;
       this.goToSuccessPage();
     };
+
+    // Render bookmark and pagination content
+    this.navigateToPage(this.currentPageNumber);
   }
 
   /**
@@ -55,78 +58,43 @@ class App {
     const newBookmark = new Bookmark(name, url);
     this.bookmarks[this.bookmarks.length] = newBookmark;
     newBookmark.onRemove = () => {
+      // Remove bookmark from this.bookmarks and update localStorage
       const indexOfBookmark = this.bookmarks.indexOf(newBookmark);
       if (indexOfBookmark === -1) return;
       this.bookmarks.splice(indexOfBookmark, 1);
       this.setLocalStorageToCurrentBookmarks();
-      this.navigateToPage(this.currentPageNumber);
+
+      // Append next bookmark
+      const nextPageFirstBookmark =
+        this.bookmarks[this.currentPageNumber * BOOKMARKS_PER_PAGE - 1];
+      if (nextPageFirstBookmark) {
+        nextPageFirstBookmark.appendTo(this.bookmarksDisplayElement);
+      }
+
+      // Update pagination
+      const currentNumberPages = this.numberPages;
+      this.numberPages = this.getNumberOfPages();
+      if (currentNumberPages !== this.numberPages) {
+        this.pagination.innerHTML = '';
+        this.makePagination();
+      }
     };
     newBookmark.onUpdate = () => {
+      // Update localStorage
       this.setLocalStorageToCurrentBookmarks();
     };
-  };
-
-  /**
-   * Set localStorage "bookmarks" key to current bookmarks.
-   */
-  setLocalStorageToCurrentBookmarks = () => {
-    localStorage.setItem('bookmarks', JSON.stringify(this.bookmarks));
-  };
-
-  /**
-   * Create pagination DOM.
-   */
-  makePagination = () => {
-    if (!this.numberPages || this.numberPages === 1) return;
-
-    console.log(this.bookmarks.length);
-
-    if (this.currentPageNumber > 1) {
-      const pageLinkPrevious = document.createElement('a');
-      pageLinkPrevious.innerHTML = 'Previous';
-      pageLinkPrevious.href =
-        this.currentPageNumber - 1 === 1
-          ? '/'
-          : `/?page=${this.currentPageNumber - 1}`;
-      pageLinkPrevious.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.navigateToPage(this.currentPageNumber - 1);
-      });
-      this.pagination.appendChild(pageLinkPrevious);
-    }
-
-    for (let i = 0; i < this.numberPages; i++) {
-      // append pagination
-      const pageLink = document.createElement('a');
-      pageLink.innerHTML = i + 1;
-      pageLink.href = i === 0 ? '/' : `/?page=${i + 1}`;
-      pageLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.navigateToPage(i + 1);
-      });
-      this.pagination.appendChild(pageLink);
-    }
-
-    if (this.currentPageNumber < this.numberPages) {
-      const pageLinkNext = document.createElement('a');
-      pageLinkNext.innerHTML = 'Next';
-      pageLinkNext.href = `/?page=${this.currentPageNumber + 1}`;
-      pageLinkNext.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.navigateToPage(this.currentPageNumber + 1);
-      });
-      this.pagination.appendChild(pageLinkNext);
-    }
   };
 
   /**
    * Add bookmarks to page with pagination.
    */
   addBookmarksToPage = () => {
-    const bookmarksOnThisPage = Array.from(this.bookmarks).slice(
+    // Create new array of bookmarks only on this page
+    const bookmarksOnThisPage = this.bookmarks.slice(
       (this.currentPageNumber - 1) * BOOKMARKS_PER_PAGE,
       this.currentPageNumber * BOOKMARKS_PER_PAGE,
     );
+    // Append these to page
     for (const bookmark of bookmarksOnThisPage) {
       this.addBookmarkToPage(bookmark);
     }
@@ -141,19 +109,85 @@ class App {
   };
 
   /**
+   * Set localStorage "bookmarks" key to current bookmarks.
+   */
+  setLocalStorageToCurrentBookmarks = () => {
+    localStorage.setItem('bookmarks', JSON.stringify(this.bookmarks));
+  };
+
+  /**
+   * Create pagination DOM.
+   */
+  makePagination = () => {
+    // Do not display pagination if no pages or one page
+    if (!this.numberPages || this.numberPages === 1) return;
+
+    // Create previous page link
+    if (this.currentPageNumber > 1) {
+      const pageLinkPrevious = document.createElement('a');
+      pageLinkPrevious.innerHTML = 'Previous';
+      pageLinkPrevious.href =
+        this.currentPageNumber - 1 === 1
+          ? '/'
+          : `/?page=${this.currentPageNumber - 1}`;
+      pageLinkPrevious.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.navigateToPage(this.currentPageNumber - 1);
+      });
+      this.pagination.appendChild(pageLinkPrevious);
+    }
+
+    // Create paginated links
+    for (let i = 0; i < this.numberPages; i++) {
+      // append pagination
+      const pageLink = document.createElement('a');
+      pageLink.innerHTML = i + 1;
+      pageLink.href = i === 0 ? '/' : `/?page=${i + 1}`;
+      pageLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.navigateToPage(i + 1);
+      });
+      this.pagination.appendChild(pageLink);
+    }
+
+    // Create next page link
+    if (this.currentPageNumber < this.numberPages) {
+      const pageLinkNext = document.createElement('a');
+      pageLinkNext.innerHTML = 'Next';
+      pageLinkNext.href = `/?page=${this.currentPageNumber + 1}`;
+      pageLinkNext.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.navigateToPage(this.currentPageNumber + 1);
+      });
+      this.pagination.appendChild(pageLinkNext);
+    }
+  };
+
+  /**
+   * Get number of pages.
+   * @return {number}
+   */
+  getNumberOfPages = () => {
+    return Math.ceil(this.bookmarks.length / BOOKMARKS_PER_PAGE);
+  };
+
+  /**
    * Navigate to page.
    * @param {number} pageNumber Page number to navigate to
    */
   navigateToPage = (pageNumber) => {
-    this.numberPages = Math.ceil(this.bookmarks.length / BOOKMARKS_PER_PAGE);
+    this.numberPages = this.getNumberOfPages();
+    // Only allow current page number to be between 0 - number of pages
     this.currentPageNumber = Math.max(
       1,
       Math.min(pageNumber, this.numberPages),
     );
+    // Remove bookmark DOM elements and render again with updated content
     this.bookmarksDisplayElement.innerHTML = '';
+    this.addBookmarksToPage();
+    // Remove pagination DOM elements and render again with updated content
     this.pagination.innerHTML = '';
     this.makePagination();
-    this.addBookmarksToPage();
   };
 
   /**

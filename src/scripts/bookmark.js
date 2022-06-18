@@ -198,6 +198,7 @@ class Bookmark {
    * Remove relative DOM element.
    */
   remove = () => {
+    this.bookmarkElement.remove();
     this.onRemove();
   };
 }
