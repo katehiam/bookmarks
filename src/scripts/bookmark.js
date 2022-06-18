@@ -15,6 +15,7 @@ class Bookmark {
     this.url = url;
     this.identifier = this.generateUniqueIdentifier();
     this.editForm = null;
+    this.onUpdate = () => {};
     this.onRemove = () => {};
   }
 
@@ -151,6 +152,8 @@ class Bookmark {
       const link = this.bookmarkElement.querySelector('.bookmark-link');
       link.innerHTML = this.name;
       link.href = this.url;
+
+      this.onUpdate();
     };
   };
 
@@ -166,15 +169,6 @@ class Bookmark {
    */
   handleEditClick = () => {
     this.showEditPanel();
-  };
-
-  /**
-   * Handle edit form submission.
-   * @param {Event} e Native submit event
-   */
-  handleEditSubmit = (e) => {
-    e.preventDefault();
-    // TODO
   };
 
   /**
@@ -205,7 +199,6 @@ class Bookmark {
    */
   remove = () => {
     this.onRemove();
-    this.bookmarkElement.remove();
   };
 }
 

@@ -27,10 +27,8 @@ class App {
     }
 
     this.currentPageNumber = 1;
-    this.numberPages = Math.ceil(this.bookmarks.length / BOOKMARKS_PER_PAGE);
     this.pagination = document.querySelector('.pagination');
-    this.makePagination();
-    this.addBookmarksToPage();
+    this.navigateToPage(this.currentPageNumber);
 
     // Forms
     this.form = new Form(document.querySelector('.add-bookmark-form'));
@@ -39,7 +37,7 @@ class App {
       const url = data.get('url');
       this.createNewBookmark(name, url);
 
-      localStorage.setItem('bookmarks', JSON.stringify(this.bookmarks));
+      this.setLocalStorageToCurrentBookmarks();
 
       // Show correct details on success page
       this.successPage.querySelector('.success-bookmark-name').innerHTML = name;
@@ -56,7 +54,23 @@ class App {
   createNewBookmark = (name, url) => {
     const newBookmark = new Bookmark(name, url);
     this.bookmarks[this.bookmarks.length] = newBookmark;
-    newBookmark.onRemove(() => this.bookmarks.delete(newBookmark));
+    newBookmark.onRemove = () => {
+      const indexOfBookmark = this.bookmarks.indexOf(newBookmark);
+      if (indexOfBookmark === -1) return;
+      this.bookmarks.splice(indexOfBookmark, 1);
+      this.setLocalStorageToCurrentBookmarks();
+      this.navigateToPage(this.currentPageNumber);
+    };
+    newBookmark.onUpdate = () => {
+      this.setLocalStorageToCurrentBookmarks();
+    };
+  };
+
+  /**
+   * Set localStorage "bookmarks" key to current bookmarks.
+   */
+  setLocalStorageToCurrentBookmarks = () => {
+    localStorage.setItem('bookmarks', JSON.stringify(this.bookmarks));
   };
 
   /**
@@ -64,6 +78,8 @@ class App {
    */
   makePagination = () => {
     if (!this.numberPages || this.numberPages === 1) return;
+
+    console.log(this.bookmarks.length);
 
     if (this.currentPageNumber > 1) {
       const pageLinkPrevious = document.createElement('a');
@@ -129,6 +145,7 @@ class App {
    * @param {number} pageNumber Page number to navigate to
    */
   navigateToPage = (pageNumber) => {
+    this.numberPages = Math.ceil(this.bookmarks.length / BOOKMARKS_PER_PAGE);
     this.currentPageNumber = Math.max(
       1,
       Math.min(pageNumber, this.numberPages),
