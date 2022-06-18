@@ -91,7 +91,7 @@ class App {
         const currentNumberPages = this.numberPages;
         this.numberPages = this.getNumberOfPages();
         if (currentNumberPages !== this.numberPages) {
-          this.pagination.innerHTML = '';
+          this.removePagination();
           this.makePagination();
         }
       }
@@ -201,6 +201,17 @@ class App {
   };
 
   /**
+   * Remove pagination and cleanup
+   */
+  removePagination = () => {
+    for (const link of this.paginationLinks) {
+      // Remove DOM element and clean up
+      link.remove();
+    }
+    this.paginationLinks = [];
+  };
+
+  /**
    * Get number of pages.
    * @return {number}
    */
@@ -232,15 +243,8 @@ class App {
     // Remove bookmark DOM elements and render again with updated content
     this.bookmarksDisplayElement.innerHTML = '';
     this.addBookmarksToPage();
-    // Remove pagination DOM elements and render again with updated content
-    for (const link of this.paginationLinks) {
-      // Remove DOM element and clean up
-      link.remove();
-      // Remove link from this.paginationLinks
-      const indexOfLink = this.paginationLinks.indexOf(link);
-      if (indexOfLink === -1) return;
-      this.paginationLinks.splice(indexOfLink, 1);
-    }
+    // Remove pagination DOM elements and render again with updated content]
+    this.removePagination();
     this.makePagination();
     // Update url history
     if (
