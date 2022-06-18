@@ -9,7 +9,7 @@ class App {
    * Create app.
    */
   constructor() {
-    const initialBookmarks = [{name: 'Google', url: 'https://www.google.com'}];
+    const initialBookmarks = [{name: 'Google', url: 'https://www.google.com'}]; // TODO Replace with persisted links
     this.bookmarks = new Set();
     this.bookmarksDisplayElement = document.querySelector('.bookmarks');
     this.form = new Form(document.querySelector('.add-bookmark-form'));
