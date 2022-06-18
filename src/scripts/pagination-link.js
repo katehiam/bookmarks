@@ -51,6 +51,7 @@ class PaginationLink {
     for (const className of this.classes) {
       link.classList.add(className);
     }
+    link.addEventListener('click', this.handleClick);
     return link;
   };
 
