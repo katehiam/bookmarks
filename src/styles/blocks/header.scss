@@ -1,2 +1,9 @@
 .header {
+  @include spacing(padding, 2);
+
+  &__link {
+    @include para-small();
+    color: $white;
+    text-decoration: none;
+  }
 }

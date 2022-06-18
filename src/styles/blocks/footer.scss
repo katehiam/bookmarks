@@ -1,2 +1,11 @@
 .footer {
+  @include spacing(padding, 2);
+
+  &__copyright {
+    @include rich-text();
+
+    p {
+      @include meta();
+    }
+  }
 }
