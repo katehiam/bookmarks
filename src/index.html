@@ -14,7 +14,18 @@
       <a href="/">Home</a>
     </header>
     <main>
-      <form class="add-bookmark-form"></form>
+      <form class="add-bookmark-form">
+        <fieldset>
+          <legend>Add bookmark</legend>
+          <label for="name">
+            Name: <input type="text" id="name" name="name" />
+          </label>
+          <label for="url">
+            Url: <input type="text" id="urk" name="url" />
+          </label>
+          <button>Add</button>
+        </fieldset>
+      </form>
       <ul class="bookmarks"></ul>
       <div class="pagination"></div>
     </main>
