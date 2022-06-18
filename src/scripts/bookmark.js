@@ -11,7 +11,7 @@ class Bookmark {
     this.name = name;
     this.url = url;
     this.identifier = this.generateClassName();
-    this.active = true;
+    this.onRemove = () => {};
   }
 
   /**
@@ -58,6 +58,14 @@ class Bookmark {
   };
 
   /**
+   * Append the bookmark to an element.
+   * @param {HTMLElement} element The element that bookmark is appended to
+   */
+  appendTo = (element) => {
+    element.appendChild(this.generateBookmarkListItem());
+  };
+
+  /**
    * Handle "delete" button click.
    */
   handleDeleteClick = () => {
@@ -82,7 +90,7 @@ class Bookmark {
    * Remove relative DOM element.
    */
   remove = () => {
-    this.active = false;
+    this.onRemove();
     document.querySelector(`.${this.identifier}`).remove();
   };
 }
