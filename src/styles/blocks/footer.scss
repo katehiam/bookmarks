@@ -1,5 +1,6 @@
 .footer {
   @include spacing(padding, 2);
+  @include spacing(padding-top, 9);
 
   &__copyright {
     @include rich-text();

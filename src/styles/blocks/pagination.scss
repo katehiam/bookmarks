@@ -1,11 +1,15 @@
 .pagination {
   @include spacing(gap, 3);
-  grid-column: 10 / -10;
+  grid-column: 5 / -5;
   text-align: center;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+
+  @include media($tablet) {
+    grid-column: 10 / -10;
+  }
 
   &__link {
     @include para-small();

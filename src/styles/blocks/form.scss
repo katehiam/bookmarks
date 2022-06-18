@@ -24,7 +24,11 @@
 
   &__field {
     $field: &;
-    grid-column-end: span 1;
+    grid-column-end: span 2;
+
+    @include media($tablet) {
+      grid-column-end: span 1;
+    }
 
     &__label {
       @include para-label;
