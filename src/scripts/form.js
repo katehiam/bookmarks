@@ -11,17 +11,14 @@ class Form {
   constructor(formElement) {
     this.form = formElement;
     this.form.addEventListener('submit', this.handleSubmit);
-    const domFields = Array.from(
-      this.form.querySelectorAll('.form__field__input'),
-    );
+    const domFields = Array.from(this.form.querySelectorAll('.form__field'));
     this.fields = [];
     this.onSuccess = () => {};
 
     for (const field of domFields) {
-      const errorElement = field
-        .closest('.form__field')
-        ?.querySelector('.form__field__error');
-      this.fields.push(new Field(field, errorElement));
+      const inputElement = field.querySelector('.form__field__input');
+      const errorElement = field.querySelector('.form__field__error');
+      this.fields.push(new Field(field, inputElement, errorElement));
     }
   }
 

@@ -4,16 +4,18 @@
 class Field {
   /**
    * Initialise form interactions.
-   * @param {HTMLElement} fieldElement DOM element of field
+   * @param {HTMLElement} wrapperElement DOM element of field wrapper
+   * @param {HTMLElement} inputElement DOM element of field input
    * @param {HTMLElement} errorElement DOM element of field error
    */
-  constructor(fieldElement, errorElement = null) {
-    this.field = fieldElement;
-    this.originalValue = this.field.value;
+  constructor(wrapperElement, inputElement, errorElement = null) {
+    this.field = wrapperElement;
+    this.inputField = inputElement;
+    this.originalValue = this.inputField.value;
     this.errorElement = errorElement;
     this.errors = [];
     this.validationChecks = [];
-    const {validationRequired, validationUrl} = this.field.dataset;
+    const {validationRequired, validationUrl} = this.inputField.dataset;
     if (validationRequired !== undefined) {
       this.validationChecks.push('required');
     }
@@ -21,8 +23,8 @@ class Field {
       this.validationChecks.push('url');
     }
 
-    this.field.addEventListener('focus', this.handleFieldFocus);
-    this.field.addEventListener('blur', this.handleFieldBlur);
+    this.inputField.addEventListener('focus', this.handleFieldFocus);
+    this.inputField.addEventListener('blur', this.handleFieldBlur);
   }
 
   /**
@@ -43,7 +45,7 @@ class Field {
    * Reset errors and value of field.
    */
   reset = () => {
-    this.field.value = this.originalValue;
+    this.inputField.value = this.originalValue;
     this.clearErrors();
   };
 
@@ -53,6 +55,7 @@ class Field {
   clearErrors = () => {
     this.errors = [];
     if (this.errorElement) this.errorElement.innerHTML = '';
+    this.field.classList.remove('form__field--has-error');
   };
 
   /**
@@ -60,7 +63,7 @@ class Field {
    * @return {boolean} Whether field is valid or not.
    */
   checkExists = () => {
-    return !!this.field.value || this.field.value !== '';
+    return !!this.inputField.value || this.inputField.value !== '';
   };
 
   /**
@@ -69,7 +72,7 @@ class Field {
    */
   checkIsUrl = () => {
     try {
-      new URL(this.field.value);
+      new URL(this.inputField.value);
       return true;
     } catch {
       return false;
@@ -107,6 +110,10 @@ class Field {
       if (this.errorElement) this.errorElement.appendChild(newErrorMessage);
     }
 
+    if (!valid) {
+      this.field.classList.add('form__field--has-error');
+    }
+
     return valid;
   };
 
@@ -114,8 +121,8 @@ class Field {
    * Clean up.
    */
   destroy = () => {
-    this.field.removeEventListener('focus', this.handleFieldFocus);
-    this.field.removeEventListener('blur', this.handleFieldBlur);
+    this.inputField.removeEventListener('focus', this.handleFieldFocus);
+    this.inputField.removeEventListener('blur', this.handleFieldBlur);
   };
 }
 

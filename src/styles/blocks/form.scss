@@ -23,6 +23,7 @@
   }
 
   &__field {
+    $field: &;
     grid-column-end: span 1;
 
     &__label {
@@ -41,12 +42,17 @@
       border: none;
       border-bottom: 1px solid $fade-strong;
       color: $white;
-      transition: border-bottom-color $ease-in-out-cubic 0.2s;
+      transition: border-bottom-color $ease-in-out-cubic 0.2s,
+        background-color $ease-in-out-cubic 0.2s;
 
       @include on-focus {
         border: none;
         outline: none;
         border-bottom: 1px solid $white;
+      }
+
+      #{$field}--has-error & {
+        background-color: rgba($red, 0.1);
       }
     }
 
