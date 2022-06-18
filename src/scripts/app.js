@@ -194,7 +194,9 @@ class App {
     window.history.pushState(
       {},
       '',
-      `${pageNumber === 1 ? '/' : `/?page=${pageNumber}`}`,
+      `${
+        this.currentPageNumber === 1 ? '/' : `/?page=${this.currentPageNumber}`
+      }`,
     );
   };
 
