@@ -1,5 +1,4 @@
 .container {
-  @include spacing(margin-top, 9);
   @include body-width();
   @include grid();
 }

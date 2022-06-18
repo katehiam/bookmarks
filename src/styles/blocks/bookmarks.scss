@@ -1,4 +1,5 @@
 .bookmarks {
+  @include spacing(padding-top, 7);
   @include spacing(gap, 3);
   grid-column: 10 / -10;
   list-style: none;
@@ -10,7 +11,7 @@
     @include spacing(column-gap, 2);
     @include spacing(padding-top, 3);
     @include spacing(padding-bottom, 3);
-    @include spacing(padding-left, 0);
+    @include spacing(padding-left, 4);
     @include spacing(padding-right, 4);
     border-radius: 4px;
     background: $fade;
@@ -21,11 +22,7 @@
     box-shadow: var(--shadow-elevation);
 
     &__link {
-      @include spacing(padding-top, 2);
-      @include spacing(padding-bottom, 2);
-      @include spacing(padding-left, 4);
-      @include spacing(padding-right, 4);
-      @include para-small();
+      @include para-small;
       display: block;
       grid-area: link;
       justify-self: start;
@@ -33,8 +30,12 @@
       text-decoration: none;
       transition: color $ease-in-out-cubic 0.2s;
 
-      @include on-hover() {
+      @include on-hover {
         color: $fade-strong;
+      }
+
+      @include on-focus {
+        outline: 2px solid $dark-purple;
       }
     }
 
@@ -55,6 +56,10 @@
       grid-area: form;
       overflow: hidden;
       transition: height $ease-in-out-cubic 0.4s;
+
+      form {
+        @include spacing(padding-top, 5);
+      }
     }
   }
 }

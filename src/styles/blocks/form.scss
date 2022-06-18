@@ -1,3 +1,72 @@
 .form {
   grid-column: 5 / -5;
+
+  &__fieldset {
+    @include grid(2);
+    @include spacing(column-gap, 3);
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__legend {
+    @include para();
+    @include spacing(margin-bottom, 2);
+    padding: 0;
+    grid-column: 1 / -1;
+  }
+
+  &__field {
+    grid-column-end: span 1;
+
+    &__label {
+      @include para-label;
+    }
+
+    &__input {
+      @include para-small;
+      @include spacing(padding-top, 2);
+      @include spacing(padding-bottom, 2);
+      @include spacing(padding-left, 0);
+      @include spacing(padding-right, 0);
+      display: block;
+      width: 100%;
+      background: none;
+      border: none;
+      border-bottom: 1px solid $fade-strong;
+      color: $white;
+      transition: border-bottom-color $ease-in-out-cubic 0.2s;
+
+      @include on-focus {
+        border: none;
+        outline: none;
+        border-bottom: 1px solid $white;
+      }
+    }
+
+    &__error {
+      @include para-label();
+      @include spacing(margin-top, 2);
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+
+  &__buttons {
+    @include spacing(margin-top, 3);
+    @include spacing(gap, 3);
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+
+    &__button {
+      @include button();
+
+      &--cancel {
+        @include button($fade);
+      }
+    }
+  }
 }

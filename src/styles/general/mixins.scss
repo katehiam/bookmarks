@@ -326,6 +326,21 @@
 }
 
 /**
+ * Label
+ */
+@mixin para-label {
+  @include cabin-font();
+  @include font-size(
+    (
+      phone: 10px,
+      laptop: 12px,
+    )
+  );
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/**
  * Type margins
  */
 @mixin type-margins($type: para) {

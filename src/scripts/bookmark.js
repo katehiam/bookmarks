@@ -73,7 +73,7 @@ class Bookmark {
     const bookmarkEditNameLabel = document.createElement('label');
     bookmarkEditNameLabel.classList.add('form__field__label');
     bookmarkEditNameLabel.for = `${this.identifier}-name`;
-    bookmarkEditNameLabel.innerHTML = 'Name: ';
+    bookmarkEditNameLabel.innerHTML = 'NAME';
     bookmarkEditNameLabel.appendChild(bookmarkEditNameField);
 
     const bookmarkEditNameError = document.createElement('div');
@@ -96,7 +96,7 @@ class Bookmark {
     const bookmarkEditUrlLabel = document.createElement('label');
     bookmarkEditUrlLabel.classList.add('form__field__label');
     bookmarkEditUrlLabel.for = `${this.identifier}-url`;
-    bookmarkEditUrlLabel.innerHTML = 'Url: ';
+    bookmarkEditUrlLabel.innerHTML = 'URL';
     bookmarkEditUrlLabel.appendChild(bookmarkEditUrlField);
 
     const bookmarkEditUrlError = document.createElement('div');
@@ -108,23 +108,28 @@ class Bookmark {
     bookmarkEditUrlWrapper.appendChild(bookmarkEditUrlError);
 
     const bookmarkEditSubmitButton = document.createElement('button');
-    bookmarkEditSubmitButton.classList.add('form__button');
-    bookmarkEditSubmitButton.classList.add('form__button--submit');
+    bookmarkEditSubmitButton.classList.add('form__buttons__button');
+    bookmarkEditSubmitButton.classList.add('form__buttons__button--submit');
     bookmarkEditSubmitButton.innerHTML = 'Update';
 
     const bookmarkEditCancelButton = document.createElement('button');
-    bookmarkEditCancelButton.classList.add('form__button--cancel');
+    bookmarkEditCancelButton.classList.add('form__buttons__button');
+    bookmarkEditCancelButton.classList.add('form__buttons__button--cancel');
     bookmarkEditCancelButton.type = 'button';
     bookmarkEditCancelButton.innerHTML = 'Cancel';
     bookmarkEditCancelButton.addEventListener('click', this.handleEditCancel);
+
+    const bookmarkEditButtons = document.createElement('div');
+    bookmarkEditButtons.classList.add('form__buttons');
+    bookmarkEditButtons.appendChild(bookmarkEditSubmitButton);
+    bookmarkEditButtons.appendChild(bookmarkEditCancelButton);
 
     const bookmarkEditFormFieldset = document.createElement('fieldset');
     bookmarkEditFormFieldset.classList.add('form__fieldset');
     bookmarkEditFormFieldset.appendChild(bookmarkEditFormLegend);
     bookmarkEditFormFieldset.appendChild(bookmarkEditNameWrapper);
     bookmarkEditFormFieldset.appendChild(bookmarkEditUrlWrapper);
-    bookmarkEditFormFieldset.appendChild(bookmarkEditSubmitButton);
-    bookmarkEditFormFieldset.appendChild(bookmarkEditCancelButton);
+    bookmarkEditFormFieldset.appendChild(bookmarkEditButtons);
 
     const bookmarkEditForm = document.createElement('form');
     bookmarkEditForm.classList.add('form');
@@ -189,7 +194,11 @@ class Bookmark {
    * Handle "edit" button click.
    */
   handleEditClick = () => {
-    this.showEditPanel();
+    if (this.getCurrentEditPanelState() === 'hidden') {
+      this.showEditPanel();
+    } else {
+      this.hideEditPanel();
+    }
   };
 
   /**
@@ -197,6 +206,17 @@ class Bookmark {
    */
   handleEditCancel = () => {
     this.hideEditPanel();
+  };
+
+  /**
+   * Get current state (hidden or shown) of edit form.
+   * @return {'hidden' | 'shown'}
+   */
+  getCurrentEditPanelState = () => {
+    const formHeight = this.bookmarkElement.querySelector(
+      '.bookmarks__bookmark__form-wrapper',
+    ).style.height;
+    return parseInt(formHeight) === 0 ? 'hidden' : 'shown';
   };
 
   /**
