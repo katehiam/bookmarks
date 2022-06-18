@@ -42,8 +42,12 @@ class App {
       this.setLocalStorageToCurrentBookmarks();
 
       // Show correct details on success page
-      this.successPage.querySelector('.success-bookmark-name').innerHTML = name;
-      this.successPage.querySelector('.success-bookmark-url').innerHTML = url;
+      this.successPage.querySelector('.success__title').innerHTML =
+        'Thank you for submitting!';
+      this.successPage.querySelector(
+        '.success__text',
+      ).innerHTML = `You added bookmark <strong>${name}</strong> which
+        links to <strong>${url}</strong>.`;
       this.goToSuccessPage();
     };
 
