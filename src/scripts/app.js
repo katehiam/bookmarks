@@ -66,19 +66,24 @@ class App {
       this.bookmarks.splice(indexOfBookmark, 1);
       this.setLocalStorageToCurrentBookmarks();
 
-      // Append next bookmark
-      const nextPageFirstBookmark =
-        this.bookmarks[this.currentPageNumber * BOOKMARKS_PER_PAGE - 1];
-      if (nextPageFirstBookmark) {
-        nextPageFirstBookmark.appendTo(this.bookmarksDisplayElement);
-      }
+      // Change page if necessary
+      if (this.currentPageNumber > this.getNumberOfPages()) {
+        this.navigateToPage(this.getNumberOfPages());
+      } else {
+        // Append next bookmark
+        const nextPageFirstBookmark =
+          this.bookmarks[this.currentPageNumber * BOOKMARKS_PER_PAGE - 1];
+        if (nextPageFirstBookmark) {
+          nextPageFirstBookmark.appendTo(this.bookmarksDisplayElement);
+        }
 
-      // Update pagination
-      const currentNumberPages = this.numberPages;
-      this.numberPages = this.getNumberOfPages();
-      if (currentNumberPages !== this.numberPages) {
-        this.pagination.innerHTML = '';
-        this.makePagination();
+        // Update pagination
+        const currentNumberPages = this.numberPages;
+        this.numberPages = this.getNumberOfPages();
+        if (currentNumberPages !== this.numberPages) {
+          this.pagination.innerHTML = '';
+          this.makePagination();
+        }
       }
     };
     newBookmark.onUpdate = () => {
