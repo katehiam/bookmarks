@@ -57,6 +57,10 @@
       overflow: hidden;
       transition: height $ease-in-out-cubic 0.4s;
 
+      &--pause-transition {
+        transition: none;
+      }
+
       form {
         @include spacing(padding-top, 5);
       }

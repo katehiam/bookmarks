@@ -168,6 +168,7 @@ class Bookmark {
    */
   initialiseEditForm = (element) => {
     this.editForm = new Form(element);
+    this.createResizeObserver();
     this.editForm.onSuccess = (data) => {
       this.name = data.get('name');
       this.url = data.get('url');
@@ -239,20 +240,58 @@ class Bookmark {
   };
 
   /**
+   * Pause transition easing.
+   */
+  pauseEditPanelTransitionEasing = () => {
+    this.bookmarkElement
+      .querySelector('.bookmarks__bookmark__form-wrapper')
+      .classList.add('bookmarks__bookmark__form-wrapper--pause-transition');
+  };
+
+  /**
+   * Resume transition easing.
+   */
+  resumeEditPanelTransitionEasing = () => {
+    this.bookmarkElement
+      .querySelector('.bookmarks__bookmark__form-wrapper')
+      .classList.remove('bookmarks__bookmark__form-wrapper--pause-transition');
+  };
+
+  /**
+   * Create resize observer to observe form
+   */
+  createResizeObserver = () => {
+    this.resizeObserver = new ResizeObserver(() => {
+      // Recalculate height of panel if it is shown
+      if (this.getCurrentEditPanelState() === 'shown') {
+        this.pauseEditPanelTransitionEasing();
+        this.showEditPanel();
+        requestAnimationFrame(() => {
+          this.resumeEditPanelTransitionEasing();
+        });
+      }
+    });
+    this.resizeObserver.observe(this.editForm.form);
+  };
+
+  /**
    * Remove relative DOM element.
    */
   remove = () => {
-    this.editForm.destroy();
-    this.editForm.form
-      .querySelector('.bookmarks__bookmark__button--delete')
-      .removeEventListener('click', this.handleDeleteClick);
-    this.editForm.form
-      .querySelector('.bookmarks__bookmark__button--edit')
-      .removeEventListener('click', this.handleEditClick);
-    this.editForm.form
-      .querySelector('.form__button--cancel')
-      .removeEventListener('click', this.handleEditCancel);
-    this.bookmarkElement.remove();
+    if (this.editForm) {
+      this.resizeObserver.unobserve(this.editForm.form);
+      this.editForm.destroy();
+      this.editForm.form
+        .querySelector('.bookmarks__bookmark__button--delete')
+        .removeEventListener('click', this.handleDeleteClick);
+      this.editForm.form
+        .querySelector('.bookmarks__bookmark__button--edit')
+        .removeEventListener('click', this.handleEditClick);
+      this.editForm.form
+        .querySelector('.form__button--cancel')
+        .removeEventListener('click', this.handleEditCancel);
+    }
+    if (this.bookmarkElement) this.bookmarkElement.remove();
     this.onRemove();
   };
 }
