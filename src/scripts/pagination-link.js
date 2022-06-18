@@ -5,14 +5,24 @@ class PaginationLink {
   /**
    * Initialise pagination link instance.
    * @param {string} href Href attribute value for link
-   * @param {string} label Label (inner HTML) of link
+   * @param {string} label Label (aria label and inner HTML) of link
+   * @param {boolean} disabled Whether the link is disabled
    * @param {[string]} classes Array of classes to be applied to link
+   * @param {string} displayLabel Label (inner HTML) of link - overrides label
    */
-  constructor(href, label, classes = []) {
+  constructor(
+    href,
+    label,
+    disabled,
+    classes = ['pagination__link'],
+    displayLabel,
+  ) {
     this.linkElement = null;
     this.href = href;
     this.label = label;
+    this.disabled = disabled;
     this.classes = classes;
+    this.displayLabel = displayLabel || this.label;
     this.onClick = () => {};
   }
 
@@ -30,8 +40,14 @@ class PaginationLink {
    */
   generatePaginationLink = () => {
     const link = document.createElement('a');
-    link.innerHTML = this.label;
-    link.href = this.href;
+    link.innerHTML = this.displayLabel;
+    link.ariaLabel = this.label;
+    link.role = 'link';
+    if (this.disabled) {
+      this.ariaDisabled = 'true';
+    } else {
+      link.href = this.href;
+    }
     for (const className of this.classes) {
       link.classList.add(className);
     }

@@ -1,4 +1,49 @@
 .pagination {
+  @include spacing(gap, 3);
   grid-column: 10 / -10;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  &__link {
+    @include para-small();
+    min-width: 2em;
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $black;
+    background: $white;
+    border-radius: 500px;
+    text-decoration: none;
+    transition: background-color $ease-in-out-cubic 0.2s;
+
+    &:not(&--disabled) {
+      @include on-hover {
+        background: $fade-strong;
+      }
+
+      @include on-focus {
+        outline: 2px solid $dark-purple;
+      }
+    }
+
+    &--next,
+    &--previous {
+      @include para();
+      min-width: 2.5em;
+      height: 2.5em;
+    }
+
+    &--active {
+      background: $pink;
+    }
+
+    &--disabled {
+      opacity: 0.2;
+      cursor: default;
+    }
+  }
 }

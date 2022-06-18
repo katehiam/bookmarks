@@ -136,25 +136,36 @@ class App {
     if (!this.numberPages || this.numberPages === 1) return;
 
     // Create previous page link
-    if (this.currentPageNumber > 1) {
-      const href =
-        this.currentPageNumber - 1 === 1
-          ? '/'
-          : `/?page=${this.currentPageNumber - 1}`;
-      const pageLinkPrevious = new PaginationLink(href, 'Previous');
-      pageLinkPrevious.onClick = (e) => {
-        e.preventDefault();
-        this.navigateToPage(this.currentPageNumber - 1);
-      };
-      pageLinkPrevious.appendTo(this.pagination);
-      this.paginationLinks.push(pageLinkPrevious);
-    }
+    const pageLinkPreviousHref =
+      this.currentPageNumber - 1 === 1
+        ? '/'
+        : `/?page=${this.currentPageNumber - 1}`;
+    const pageLinkPrevious = new PaginationLink(
+      pageLinkPreviousHref,
+      'Previous',
+      this.currentPageNumber === 1,
+      [
+        'pagination__link',
+        'pagination__link--previous',
+        this.currentPageNumber === 1 && 'pagination__link--disabled',
+      ],
+      '<',
+    );
+    pageLinkPrevious.onClick = (e) => {
+      e.preventDefault();
+      this.navigateToPage(this.currentPageNumber - 1);
+    };
+    pageLinkPrevious.appendTo(this.pagination);
+    this.paginationLinks.push(pageLinkPrevious);
 
     // Create paginated links
     for (let i = 0; i < this.numberPages; i++) {
       // append pagination
       const href = i === 0 ? '/' : `/?page=${i + 1}`;
-      const pageLink = new PaginationLink(href, i + 1);
+      const pageLink = new PaginationLink(href, i + 1, false, [
+        'pagination__link',
+        i === this.currentPageNumber - 1 && 'pagination__link--active',
+      ]);
       pageLink.onClick = (e) => {
         e.preventDefault();
         this.navigateToPage(i + 1);
@@ -164,16 +175,25 @@ class App {
     }
 
     // Create next page link
-    if (this.currentPageNumber < this.numberPages) {
-      const href = `/?page=${this.currentPageNumber + 1}`;
-      const pageLinkNext = new PaginationLink(href, 'Next');
-      pageLinkNext.onClick = (e) => {
-        e.preventDefault();
-        this.navigateToPage(this.currentPageNumber + 1);
-      };
-      pageLinkNext.appendTo(this.pagination);
-      this.paginationLinks.push(pageLinkNext);
-    }
+    const pageLinkNextHref = `/?page=${this.currentPageNumber + 1}`;
+    const pageLinkNext = new PaginationLink(
+      pageLinkNextHref,
+      'Next',
+      this.currentPageNumber >= this.numberPages,
+      [
+        'pagination__link',
+        'pagination__link--next',
+        this.currentPageNumber >= this.numberPages &&
+          'pagination__link--disabled',
+      ],
+      '>',
+    );
+    pageLinkNext.onClick = (e) => {
+      e.preventDefault();
+      this.navigateToPage(this.currentPageNumber + 1);
+    };
+    pageLinkNext.appendTo(this.pagination);
+    this.paginationLinks.push(pageLinkNext);
   };
 
   /**
