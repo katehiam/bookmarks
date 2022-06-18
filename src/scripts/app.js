@@ -33,7 +33,7 @@ class App {
     this.pagination = document.querySelector('.pagination');
 
     // Forms
-    this.form = new Form(document.querySelector('.add-bookmark-form'));
+    this.form = new Form(document.querySelector('.form--add'));
     this.form.onSuccess = (data) => {
       // Create new Bookmark with form data and save to localStorage
       const name = data.get('name');

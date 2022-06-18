@@ -11,14 +11,14 @@ class Form {
   constructor(formElement) {
     this.form = formElement;
     this.form.addEventListener('submit', this.handleSubmit);
-    const domFields = Array.from(this.form.querySelectorAll('input, textarea'));
+    const domFields = Array.from(this.form.querySelectorAll('.form__field'));
     this.fields = [];
     this.onSuccess = () => {};
 
     for (const field of domFields) {
       const errorElement = field
-        .closest('.field')
-        ?.querySelector('.field-error');
+        .closest('.form__field')
+        ?.querySelector('.form__field__error');
       this.fields.push(new Field(field, errorElement));
     }
   }

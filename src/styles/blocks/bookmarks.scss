@@ -1,2 +1,30 @@
 .bookmarks {
+  grid-column: 10 / -10;
+  list-style: none;
+  padding: 0;
+
+  &__bookmark {
+    display: grid;
+    grid-template-areas: 'link edit-button delete-button' 'form form form';
+    grid-template-columns: 1fr auto auto;
+
+    &__link {
+      grid-area: link;
+    }
+
+    &__button {
+      &--edit {
+        grid-area: edit-button;
+      }
+
+      &--delete {
+        grid-area: delete-button;
+      }
+    }
+
+    &__form-wrapper {
+      grid-area: form;
+      overflow: hidden;
+    }
+  }
 }

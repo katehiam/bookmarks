@@ -1,2 +1,8 @@
 .intro {
+  @include rich-text();
+  grid-column: 5 / -5;
+
+  @include media($tablet) {
+    text-align: center;
+  }
 }

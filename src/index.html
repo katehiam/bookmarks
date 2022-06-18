@@ -18,36 +18,39 @@
         <div class="container">
           <div class="intro">
             <h1>Welcome to Bookmark List</h1>
+            <p>Store your favourite bookmarks here. Add, edit and delete your bookmarks.</p>
           </div>
         </div>
         <div class="container">
-          <form class="form add-bookmark-form">
-            <fieldset>
-              <legend>Add bookmark</legend>
-              <div class="field">
-                <label for="name">
+          <form class="form form--add">
+            <fieldset class="form__fieldset">
+              <legend class="form__legend">Add bookmark</legend>
+              <div class="form__field">
+                <label class="form__label" for="name">
                   Name:
                   <input
-                    type="text"
                     id="name"
+                    class="form__field__input"
+                    type="text"
                     name="name"
                     data-validation-required
                   />
                 </label>
-                <div class="field-error"></div>
+                <div class="form__field__error"></div>
               </div>
-              <div class="field">
-                <label for="url">
+              <div class="form__field">
+                <label class="form__field__label" for="url">
                   Url:
                   <input
-                    type="text"
                     id="url"
+                    class="form__field__input"
+                    type="text"
                     name="url"
                     data-validation-required
                     data-validation-url
                   />
                 </label>
-                <div class="field-error"></div>
+                <div class="form__field__error"></div>
               </div>
               <button>Add</button>
             </fieldset>
