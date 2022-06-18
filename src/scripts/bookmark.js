@@ -280,18 +280,20 @@ class Bookmark {
   remove = () => {
     if (this.editForm) {
       this.resizeObserver.unobserve(this.editForm.form);
-      this.editForm.destroy();
       this.editForm.form
+        .querySelector('.form__buttons__button--cancel')
+        .removeEventListener('click', this.handleEditCancel);
+      this.editForm.destroy();
+    }
+    if (this.bookmarkElement) {
+      this.bookmarkElement
         .querySelector('.bookmarks__bookmark__button--delete')
         .removeEventListener('click', this.handleDeleteClick);
-      this.editForm.form
+      this.bookmarkElement
         .querySelector('.bookmarks__bookmark__button--edit')
         .removeEventListener('click', this.handleEditClick);
-      this.editForm.form
-        .querySelector('.form__button--cancel')
-        .removeEventListener('click', this.handleEditCancel);
+      this.bookmarkElement.remove();
     }
-    if (this.bookmarkElement) this.bookmarkElement.remove();
     this.onRemove();
   };
 }

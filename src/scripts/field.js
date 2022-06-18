@@ -10,12 +10,12 @@ class Field {
    */
   constructor(wrapperElement, inputElement, errorElement = null) {
     this.field = wrapperElement;
-    this.inputField = inputElement;
-    this.originalValue = this.inputField.value;
+    this.inputElement = inputElement;
+    this.originalValue = this.inputElement.value;
     this.errorElement = errorElement;
     this.errors = [];
     this.validationChecks = [];
-    const {validationRequired, validationUrl} = this.inputField.dataset;
+    const {validationRequired, validationUrl} = this.inputElement.dataset;
     if (validationRequired !== undefined) {
       this.validationChecks.push('required');
     }
@@ -23,8 +23,8 @@ class Field {
       this.validationChecks.push('url');
     }
 
-    this.inputField.addEventListener('focus', this.handleFieldFocus);
-    this.inputField.addEventListener('blur', this.handleFieldBlur);
+    this.inputElement.addEventListener('focus', this.handleFieldFocus);
+    this.inputElement.addEventListener('blur', this.handleFieldBlur);
   }
 
   /**
@@ -45,7 +45,7 @@ class Field {
    * Reset errors and value of field.
    */
   reset = () => {
-    this.inputField.value = this.originalValue;
+    this.inputElement.value = this.originalValue;
     this.clearErrors();
   };
 
@@ -63,7 +63,7 @@ class Field {
    * @return {boolean} Whether field is valid or not.
    */
   checkExists = () => {
-    return !!this.inputField.value || this.inputField.value !== '';
+    return !!this.inputElement.value || this.inputElement.value !== '';
   };
 
   /**
@@ -72,7 +72,7 @@ class Field {
    */
   checkIsUrl = () => {
     try {
-      new URL(this.inputField.value);
+      new URL(this.inputElement.value);
       return true;
     } catch {
       return false;
@@ -121,8 +121,8 @@ class Field {
    * Clean up.
    */
   destroy = () => {
-    this.inputField.removeEventListener('focus', this.handleFieldFocus);
-    this.inputField.removeEventListener('blur', this.handleFieldBlur);
+    this.inputElement.removeEventListener('focus', this.handleFieldFocus);
+    this.inputElement.removeEventListener('blur', this.handleFieldBlur);
   };
 }
 

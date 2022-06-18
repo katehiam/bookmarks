@@ -63,8 +63,8 @@ class Form {
     this.form.removeEventListener('submit', this.handleSubmit);
 
     for (const field of this.fields) {
-      field.removeEventListener('focus', this.handleFieldFocus);
-      field.removeEventListener('blur', this.handleFieldBlur);
+      field.inputElement.removeEventListener('focus', this.handleFieldFocus);
+      field.inputElement.removeEventListener('blur', this.handleFieldBlur);
     }
   };
 }
