@@ -1,23 +1,52 @@
 .bookmarks {
+  @include spacing(gap, 3);
   grid-column: 10 / -10;
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
 
   &__bookmark {
+    @include spacing(column-gap, 2);
+    @include spacing(padding-top, 3);
+    @include spacing(padding-bottom, 3);
+    @include spacing(padding-left, 0);
+    @include spacing(padding-right, 4);
+    border-radius: 4px;
+    background: $fade;
     display: grid;
     grid-template-areas: 'link edit-button delete-button' 'form form form';
     grid-template-columns: 1fr auto auto;
+    align-items: center;
+    box-shadow: var(--shadow-elevation);
 
     &__link {
+      @include spacing(padding-top, 2);
+      @include spacing(padding-bottom, 2);
+      @include spacing(padding-left, 4);
+      @include spacing(padding-right, 4);
+      @include para-small();
+      display: block;
       grid-area: link;
+      justify-self: start;
+      color: $white;
+      text-decoration: none;
+      transition: color $ease-in-out-cubic 0.2s;
+
+      @include on-hover() {
+        color: $fade-strong;
+      }
     }
 
     &__button {
+      @include button();
+
       &--edit {
         grid-area: edit-button;
       }
 
       &--delete {
+        @include button($red);
         grid-area: delete-button;
       }
     }
@@ -25,6 +54,7 @@
     &__form-wrapper {
       grid-area: form;
       overflow: hidden;
+      transition: height $ease-in-out-cubic 0.4s;
     }
   }
 }

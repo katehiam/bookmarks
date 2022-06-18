@@ -357,7 +357,7 @@
 /**
  * Button
  */
-@mixin button() {
+@mixin button($background-color: $fade-strong) {
   @include spacing(padding-left, 5);
   @include spacing(padding-right, 5);
   @include spacing(padding-top, 3);
@@ -365,13 +365,16 @@
   @include para-small();
   will-change: transform;
   display: inline-block;
-  background-color: $blue;
+  background-color: $background-color;
   color: $black;
   border-radius: 4px;
   position: relative;
   transform: scale(0.95);
   transition: transform ease-in-out 0.3s;
   margin: -0.25%;
+  cursor: pointer;
+  overflow: hidden;
+  border: none;
 
   &::before {
     content: '';
@@ -421,8 +424,7 @@
   }
 
   @include on-focus {
-    background-color: $orange;
-    outline: 2px solid $orange;
+    outline: 2px solid $dark-purple;
   }
 }
 

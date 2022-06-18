@@ -88,8 +88,27 @@ $columns: 48;
 /**
  * Colours
  */
-$white: #ffffff;
-$black: #000000;
+$white: #fff;
+$black: #000;
+$fade: rgba(#fff, 0.2);
+$fade-strong: rgba(#fff, 0.4);
+$red: #f50d0d;
+$dark-purple: #5a3786;
+$purple: #7619a7;
+$pink: #e36cdd;
+$gradient: linear-gradient(
+  45deg,
+  hsl(279deg 74% 38%) 0%,
+  hsl(282deg 67% 41%) 21%,
+  hsl(284deg 60% 44%) 30%,
+  hsl(287deg 55% 47%) 39%,
+  hsl(289deg 51% 50%) 46%,
+  hsl(292deg 52% 53%) 54%,
+  hsl(295deg 54% 55%) 61%,
+  hsl(297deg 56% 58%) 69%,
+  hsl(300deg 60% 62%) 79%,
+  hsl(303deg 68% 66%) 100%
+);
 
 /**
  * Easings
@@ -97,3 +116,11 @@ $black: #000000;
 $ease-in-cubic: cubic-bezier(0.32, 0, 0.67, 0);
 $ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
 $ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+
+:root {
+  --shadow-color: 270deg 53% 21%;
+  --shadow-elevation: 0.2px 0.5px 0.6px hsl(var(--shadow-color) / 0.25),
+    0.6px 1.3px 1.6px -0.8px hsl(var(--shadow-color) / 0.25),
+    1.6px 3.2px 4px -1.7px hsl(var(--shadow-color) / 0.25),
+    3.7px 7.7px 9.6px -2.5px hsl(var(--shadow-color) / 0.25);
+}
