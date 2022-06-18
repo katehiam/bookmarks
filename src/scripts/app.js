@@ -1,7 +1,7 @@
 import {Bookmark} from '@scripts/bookmark';
 import {Form} from '@scripts/form';
 
-const BOOKMARKS_PER_PAGE = 2;
+const BOOKMARKS_PER_PAGE = 5;
 
 /**
  * Entry point.
