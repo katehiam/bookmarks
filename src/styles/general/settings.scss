@@ -1,0 +1,99 @@
+/**
+ * Breakpoints
+ */
+$phone: 320px;
+$phablet: 480px;
+$tablet: 768px;
+$laptop: 1280px;
+$desktop: 1680px;
+$widescreen: 2200px;
+
+// List of breakpoints (used in mixins and functions
+$breakpoints-list: (
+  phone: $phone,
+  phablet: $phablet,
+  tablet: $tablet,
+  laptop: $laptop,
+  desktop: $desktop,
+  widescreen: $widescreen,
+);
+
+/**
+ * Spacing sizes
+ */
+$spacing-sizes: (
+  0: (
+    phone: 0px,
+    tablet: 0px,
+    laptop: 0px,
+  ),
+  1: (
+    phone: 2px,
+    tablet: 3px,
+    laptop: 4px,
+  ),
+  2: (
+    phone: 4px,
+    tablet: 6px,
+    laptop: 8px,
+  ),
+  3: (
+    phone: 6px,
+    tablet: 9px,
+    laptop: 12px,
+  ),
+  4: (
+    phone: 8px,
+    tablet: 12px,
+    laptop: 16px,
+  ),
+  5: (
+    phone: 12px,
+    tablet: 18px,
+    laptop: 24px,
+  ),
+  6: (
+    phone: 16px,
+    tablet: 24px,
+    laptop: 32px,
+  ),
+  7: (
+    phone: 24px,
+    tablet: 36px,
+    laptop: 48px,
+  ),
+  8: (
+    phone: 32px,
+    tablet: 48px,
+    laptop: 64px,
+  ),
+  9: (
+    phone: 64px,
+    tablet: 96px,
+    laptop: 128px,
+  ),
+);
+
+/**
+ * Min and max content width caps
+ */
+$min-width: false;
+$max-width: 1520px;
+
+/**
+ * Number of grid columns
+ */
+$columns: 48;
+
+/**
+ * Colours
+ */
+$white: #ffffff;
+$black: #000000;
+
+/**
+ * Easings
+ */
+$ease-in-cubic: cubic-bezier(0.32, 0, 0.67, 0);
+$ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+$ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);

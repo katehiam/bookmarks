@@ -1,0 +1,106 @@
+@use 'sass:math';
+
+/**
+ * Calculate fluid value interpolating between two values
+ */
+@function fluid(
+  $from,
+  $to,
+  $from-breakpoint: $phone-min,
+  $to-breakpoint: $desktop-min,
+  $exact: false,
+  $callback-name: null,
+  $viewport-width: null
+) {
+  $slope: math.div($to - $from, $to-breakpoint - $from-breakpoint);
+  $base: $from - $slope * $from-breakpoint;
+
+  @if ($viewport-width) {
+    @if ($callback-name) {
+      @return call(
+        get-function($callback-name),
+        calc(#{$base} + #{$viewport-width} * #{$slope})
+      );
+    } @else {
+      @return calc(#{$base} + #{$viewport-width} * #{$slope});
+    }
+  } @else {
+    @if $exact {
+      // sometimes we need the exact value
+      @if ($callback-name) {
+        @return call(
+          get-function($callback-name),
+          calc(#{$base} + #{100vw * $slope})
+        );
+      } @else {
+        @return calc(#{$base} + #{100vw * $slope});
+      }
+    } @else {
+      // rounded for consistency while responding
+      @if ($callback-name) {
+        @return call(
+          $callback-name,
+          calc(#{$base} + #{round(100vw * $slope * 100) * 0.01})
+        );
+      } @else {
+        @return calc(#{$base} + #{round(100vw * $slope * 100) * 0.01});
+      }
+    }
+  }
+}
+
+/**
+ * Calculate fluid value interpolating between two values, using $sizes map
+ */
+@function fluid-from-map(
+  $breakpoint,
+  $next-breakpoint,
+  $sizes,
+  $breakpoints,
+  $callback-name: null,
+  $viewport-width: null
+) {
+  $from: map-get($sizes, $breakpoint);
+  $to: map-get($sizes, $next-breakpoint);
+
+  $from-breakpoint: map-get($breakpoints, $breakpoint);
+  $to-breakpoint: map-get($breakpoints, $next-breakpoint);
+
+  @return fluid(
+    $from,
+    $to,
+    $from-breakpoint,
+    $to-breakpoint,
+    true,
+    $callback-name,
+    $viewport-width
+  );
+}
+
+/**
+ * Return spacing size map from $size integer
+ */
+@function get-spacing-size($size) {
+  @return map-get($spacing-sizes, $size);
+}
+
+/**
+ * Return width of number of columns
+ * Note: if this changes, page-gutters() mixin may also need to be updated
+ */
+@function fr-gap($cols: 0) {
+  $mobile-width: calc(100vw - #{$page-gutters * 2});
+  $tablet-width: 100vw;
+  $capped-width: $max-width;
+
+  $responsive-content-width: max(
+    #{$mobile-width},
+    min(#{$tablet-width}, calc((100vw - #{$tablet-min - 1px}) * 9999))
+  ); // on sizes $tablet-min - 1px and under, use `100vw - 2.5rem`, on sizes $tablet-min and above, use `100vw`
+  $capped-content-width: min(
+    #{$responsive-content-width},
+    #{$capped-width}
+  ); // cap width
+
+  @return calc(#{$capped-content-width} / #{$columns} * #{$cols});
+}

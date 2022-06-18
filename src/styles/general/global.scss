@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  @include para();
+  padding: 0;
+  margin: 0;
+  background-color: $white;
+  color: $black;
+}
+
+.hide {
+  display: none;
+}

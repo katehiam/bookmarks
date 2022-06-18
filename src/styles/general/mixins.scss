@@ -1,0 +1,501 @@
+@use 'sass:math';
+
+/*
+*
+* ``````````````````````````` LAYOUT ```````````````````````````
+*
+*/
+
+/**
+ * Use media query
+ * e.g. @include media($tablet-min)
+ */
+@mixin media($min-width) {
+  @if ($min-width) {
+    @media screen and (min-width: $min-width) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+/**
+ * Add basic grid to component
+ * e.g. @include grid()
+ */
+@mixin grid($cols: $columns) {
+  display: grid;
+  grid-template-columns: repeat(#{$cols}, minmax(0, 1fr));
+}
+
+/**
+ * Add basic width attributes for body content
+ * e.g. @include body-width()
+ */
+@mixin body-width($max: $max-width) {
+  margin-left: auto;
+  margin-right: auto;
+
+  @if ($max) {
+    max-width: $max;
+  }
+}
+
+/**
+ * Remove top margin if first-child and bottom margin if last-child
+ * e.g. @include remove-outer-margins()
+ */
+@mixin remove-outer-margins() {
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/*
+*
+* ``````````````````````````` SIZING ```````````````````````````
+*
+*/
+
+/**
+ * Calculate values (interpolate) from map
+ * @include responsive-size(
+ *   width,
+ *   (
+ *     phone: 36px,
+ *     tablet: 46px,
+ *     desktop: 50px,
+ *   )
+ * )
+ * @include responsive-size(
+ *   width,
+ *   (
+ *     phone: 36px,
+ *     tablet: 46px,
+ *     desktop: 50px,
+ *   ),
+ *   null,
+ *   $phone,
+ *   $widescreen
+ * )
+ */
+//  Use callback-name to add a kind of template to the value, e.g.
+//  @function my-fn($value) {
+//    @return translateX(#{$value});
+//  }
+//  @include col-width(transform, my-fn);
+@mixin responsive-size(
+  $property,
+  $sizes,
+  $callback-name: null,
+  $min-breakpoint: $min-width,
+  $max-breakpoint: $max-width
+) {
+  // $i of $sizes map
+  $i: 1; // index starts at 1 in lists
+  $list-sizes: map-keys($sizes);
+
+  @if (length($list-sizes) >= 2) {
+    $first-breakpoint: nth($list-sizes, $i);
+    $next-breakpoint: nth($list-sizes, $i + 1);
+
+    // min restriction
+    $value-min: fluid-from-map(
+      $first-breakpoint,
+      $next-breakpoint,
+      $sizes,
+      $breakpoints-list,
+      $callback-name,
+      $min-breakpoint
+    );
+    #{$property}: $value-min;
+
+    @if ($min-breakpoint) {
+      // fluid sizing
+      @include media($min-breakpoint) {
+        // base / min fluid calculation
+        #{$property}: fluid-from-map(
+          $first-breakpoint,
+          $next-breakpoint,
+          $sizes,
+          $breakpoints-list,
+          $callback-name
+        );
+
+        // for each $sizes breakpoint
+        @each $breakpoint in $list-sizes {
+          $next-breakpoint: $breakpoint;
+
+          @if ($i + 1 <= length($list-sizes)) {
+            $next-breakpoint: nth($list-sizes, $i + 1);
+
+            @include media(map-get($breakpoints-list, $breakpoint)) {
+              #{$property}: fluid-from-map(
+                $breakpoint,
+                $next-breakpoint,
+                $sizes,
+                $breakpoints-list,
+                $callback-name
+              );
+            }
+          }
+
+          $i: $i + 1;
+        }
+      }
+    } @else {
+      // for each $sizes breakpoint
+      @each $breakpoint in $list-sizes {
+        $next-breakpoint: $breakpoint;
+
+        @if ($i + 1 <= length($list-sizes)) {
+          $next-breakpoint: nth($list-sizes, $i + 1);
+
+          @include media(map-get($breakpoints-list, $breakpoint)) {
+            #{$property}: fluid-from-map(
+              $breakpoint,
+              $next-breakpoint,
+              $sizes,
+              $breakpoints-list,
+              $callback-name
+            );
+          }
+        }
+
+        $i: $i + 1;
+      }
+    }
+
+    @if ($max-breakpoint) {
+      // max restriction
+      $value-max: fluid-from-map(
+        nth($list-sizes, length($list-sizes) - 1),
+        nth($list-sizes, length($list-sizes)),
+        $sizes,
+        $breakpoints-list,
+        $callback-name,
+        $max-breakpoint
+      );
+      @include media($max-breakpoint) {
+        #{$property}: $value-max;
+        $i: $i + 1;
+      }
+    }
+  }
+}
+
+/**
+ * Calculate font size value (interpolate) from $font-sizes
+ * @include font-size(
+ *   (
+ *     phone: 36px,
+ *     tablet: 46px,
+ *     desktop: 50px,
+ *   )
+ * )
+ */
+@mixin font-size($font-sizes) {
+  @include responsive-size('font-size', $font-sizes);
+}
+
+/**
+ * Calculate spacing value (interpolate) from $spacing-sizes
+ * @include spacing(height)
+ * @include spacing(height, 3)
+ */
+//  Use callback-name to add a kind of template to the value, e.g.
+//  @function my-fn($value) {
+//    @return translateX(#{$value});
+//  }
+//  @include col-width(transform, my-fn);
+@mixin spacing($property, $spacing-size: 1, $callback: null) {
+  $spacing-size-map: get-spacing-size($spacing-size);
+  @include responsive-size($property, $spacing-size-map, $callback);
+}
+
+/*
+*
+* ``````````````````````````` MISC ```````````````````````````
+*
+*/
+
+/**
+ * Fallback to `:active` selector if device doesn't support `hover`, e.g touch devices
+ */
+@mixin on-hover() {
+  &:active {
+    @content;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+/**
+ * Use for keyboard focus styling
+ */
+@mixin on-focus() {
+  &:focus-visible {
+    @content;
+  }
+}
+
+/*
+*
+* ``````````````````````````` TYPOGRAPHY ```````````````````````````
+*
+*/
+
+/**
+ * Font family
+ */
+@mixin code-next-font {
+  font-family: Code Next, Arial, Helvetica, sans-serif;
+}
+
+/**
+ * H1
+ */
+@mixin h1 {
+  @include code-next-font();
+
+  font-weight: 300;
+  @include font-size(
+    (
+      phone: 34px,
+      laptop: 60px,
+    )
+  );
+  line-height: 1.05;
+  letter-spacing: normal;
+}
+
+/**
+ * H2
+ */
+@mixin h2 {
+  @include code-next-font();
+
+  font-weight: 300;
+  @include font-size(
+    (
+      phone: 24px,
+      laptop: 32px,
+    )
+  );
+  line-height: 1.05;
+  letter-spacing: normal;
+}
+
+/**
+ * Body paragraph
+ */
+@mixin para {
+  @include code-next-font();
+  @include font-size(
+    (
+      phone: 14px,
+      laptop: 18px,
+    )
+  );
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/**
+ * Small paragraph
+ */
+@mixin para-small {
+  @include code-next-font();
+  @include font-size(
+    (
+      phone: 12px,
+      laptop: 16px,
+    )
+  );
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/**
+ * Type margins
+ */
+@mixin type-margins($type: para) {
+  @if $type == h1 {
+    @include spacing(margin-top, 3);
+    @include spacing(margin-bottom, 3);
+  } @else if $type == h2 {
+    @include spacing(margin-top, 0);
+    @include spacing(margin-bottom, 3);
+  } @else if $type == para {
+    @include spacing(margin-top, 0);
+    @include spacing(margin-bottom, 3);
+  }
+}
+
+/**
+ * Text link
+ */
+@mixin link() {
+  color: $white;
+  text-decoration: none;
+  border-bottom: 1px solid $white;
+
+  @include on-hover() {
+    opacity: 0.5;
+  }
+}
+
+/**
+ * Button
+ */
+@mixin button() {
+  @include spacing(padding-left, 5);
+  @include spacing(padding-right, 5);
+  @include spacing(padding-top, 3);
+  @include spacing(padding-bottom, 3);
+  @include para-small();
+  will-change: transform;
+  display: inline-block;
+  background-color: $blue;
+  color: $black;
+  border-radius: 4px;
+  position: relative;
+  transform: scale(0.95);
+  transition: transform ease-in-out 0.3s;
+  margin: -0.25%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 4px;
+    box-shadow: var(--shadow-elevation-high);
+    opacity: 0;
+    transition: opacity ease-in-out 0.3s;
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba($white, 0);
+    background: linear-gradient(
+      128deg,
+      rgba($white, 0) 0%,
+      rgba($white, 1) 20%,
+      rgba($white, 1) 84%,
+      rgba($white, 0) 100%
+    );
+    opacity: 0.7;
+    transform: translateX(-100%);
+    transition: transform ease-in-out 0.3s;
+    pointer-events: none;
+  }
+
+  @include on-hover() {
+    transform: scale(1);
+
+    &::before {
+      opacity: 1;
+    }
+
+    &::after {
+      transform: translateX(100%);
+    }
+  }
+
+  @include on-focus {
+    background-color: $orange;
+    outline: 2px solid $orange;
+  }
+}
+
+/**
+ * Rich-text
+ */
+@mixin rich-text {
+  h1 {
+    @include h1();
+    @include type-margins(h1);
+    @include remove-outer-margins();
+  }
+
+  h2 {
+    @include h2();
+    @include type-margins(h2);
+    @include remove-outer-margins();
+  }
+
+  p {
+    @include para();
+    @include type-margins(para);
+    @include remove-outer-margins();
+  }
+
+  a {
+    @include link();
+  }
+
+  table {
+    @include type-margins(para);
+    @include remove-outer-margins();
+    tr {
+      td:first-child {
+        font-weight: 500;
+        display: block;
+        margin-right: 0.6em;
+      }
+    }
+  }
+
+  ol,
+  ul {
+    @include type-margins(para);
+    padding-left: 1.5em;
+
+    p {
+      margin-bottom: 0;
+    }
+
+    ol,
+    ul {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  ol {
+    list-style-type: decimal;
+
+    ol {
+      list-style-type: lower-roman;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  hr {
+    @include spacing(margin-top, 9);
+    @include spacing(margin-bottom, 5);
+    border: none;
+    border-top: 4px solid $black;
+    width: 100%;
+  }
+}
