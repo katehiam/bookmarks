@@ -49,6 +49,9 @@ class App {
 
     // Render bookmark and pagination content
     this.navigateToPage(this.currentPageNumber);
+
+    // Show page
+    document.body.classList.remove('loading');
   }
 
   /**
