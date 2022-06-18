@@ -149,6 +149,7 @@ class Bookmark {
     bookmarkListItem.appendChild(bookmarkEditFormWrapper);
 
     this.initialiseEditForm(bookmarkEditForm);
+    this.setEditFormTabIndex(-1);
 
     return bookmarkListItem;
   };
@@ -184,6 +185,20 @@ class Bookmark {
 
       this.onUpdate();
     };
+  };
+
+  /**
+   * Set tagIndex of tabbable elements in edit form
+   * @param {number} tabIndex New tabIndex value
+   */
+  setEditFormTabIndex = (tabIndex) => {
+    const tabbableElements = Array.from(
+      this.editForm.form.querySelectorAll('input, button, a'),
+    );
+
+    for (const element of tabbableElements) {
+      element.tabIndex = tabIndex;
+    }
   };
 
   /**
@@ -230,6 +245,7 @@ class Bookmark {
     this.bookmarkElement.querySelector(
       '.bookmarks__bookmark__form-wrapper',
     ).style.height = `${fullHeight}px`;
+    this.setEditFormTabIndex(0);
   };
 
   /**
@@ -239,6 +255,7 @@ class Bookmark {
     this.bookmarkElement.querySelector(
       '.bookmarks__bookmark__form-wrapper',
     ).style.height = '0';
+    this.setEditFormTabIndex(-1);
   };
 
   /**
