@@ -13,6 +13,7 @@ class App {
       const newBookmarkLink = document.createElement('a');
       newBookmarkLink.innerHTML = name;
       newBookmarkLink.href = url;
+      newBookmarkLink.target = '_blank';
 
       const newBookmarkListItem = document.createElement('li');
       newBookmarkListItem.appendChild(newBookmarkLink);
