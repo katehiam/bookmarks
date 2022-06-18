@@ -14,39 +14,49 @@
       <a href="/">Home</a>
     </header>
     <main>
-      <form class="add-bookmark-form">
-        <fieldset>
-          <legend>Add bookmark</legend>
-          <div class="field">
-            <label for="name">
-              Name:
-              <input
-                type="text"
-                id="name"
-                name="name"
-                data-validation-required
-              />
-            </label>
-            <div class="field-error"></div>
-          </div>
-          <div class="field">
-            <label for="url">
-              Url:
-              <input
-                type="text"
-                id="url"
-                name="url"
-                data-validation-required
-                data-validation-url
-              />
-            </label>
-            <div class="field-error"></div>
-          </div>
-          <button>Add</button>
-        </fieldset>
-      </form>
-      <ul class="bookmarks"></ul>
-      <div class="pagination"></div>
+      <div class="overview-page">
+        <form class="add-bookmark-form">
+          <fieldset>
+            <legend>Add bookmark</legend>
+            <div class="field">
+              <label for="name">
+                Name:
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  data-validation-required
+                />
+              </label>
+              <div class="field-error"></div>
+            </div>
+            <div class="field">
+              <label for="url">
+                Url:
+                <input
+                  type="text"
+                  id="url"
+                  name="url"
+                  data-validation-required
+                  data-validation-url
+                />
+              </label>
+              <div class="field-error"></div>
+            </div>
+            <button>Add</button>
+          </fieldset>
+        </form>
+        <ul class="bookmarks"></ul>
+        <div class="pagination"></div>
+      </div>
+      <div class="success-page">
+        <h1>Thank you for submitting!</h1>
+        <p>
+          You added bookmark <strong><span class="success-bookmark-name"></span></strong> which
+          links to <strong><span class="success-bookmark-url"></strong></span>.
+        </p>
+        <a href="/">Back to home</a>
+      </div>
     </main>
     <footer>
       <div><p>© Kate Scherz</p></div>
