@@ -27,9 +27,7 @@ class App {
     }
 
     // Pagination
-    const queryString = window.location.search;
-    const searchParams = new URLSearchParams(queryString);
-    this.currentPageNumber = searchParams.get('page') || 1;
+    this.currentPageNumber = this.getCurrentPageNumber();
     this.pagination = document.querySelector('.pagination');
 
     // Forms
@@ -52,6 +50,9 @@ class App {
 
     // Show page
     document.body.classList.remove('loading');
+
+    // Listen for url changes
+    window.addEventListener('popstate', this.handlePopState);
   }
 
   /**
@@ -182,6 +183,16 @@ class App {
   };
 
   /**
+   * Get current page number from URL query string.
+   * @return {number}
+   */
+  getCurrentPageNumber = () => {
+    const queryString = window.location.search;
+    const searchParams = new URLSearchParams(queryString);
+    return searchParams.get('page') || 1;
+  };
+
+  /**
    * Navigate to page.
    * @param {number} pageNumber Page number to navigate to
    */
@@ -199,11 +210,19 @@ class App {
     this.pagination.innerHTML = '';
     this.makePagination();
     // Update url history
-    this.pushStateAndGoToTop(
-      `${
-        this.currentPageNumber === 1 ? '/' : `/?page=${this.currentPageNumber}`
-      }`,
-    );
+    if (
+      (this.currentPageNumber === 1 && window.location.search !== '') ||
+      (this.currentPageNumber !== 1 &&
+        window.location.search !== `?page=${this.currentPageNumber}`)
+    ) {
+      this.pushStateAndGoToTop(
+        `${
+          this.currentPageNumber === 1
+            ? '/'
+            : `/?page=${this.currentPageNumber}`
+        }`,
+      );
+    }
   };
 
   /**
@@ -221,8 +240,9 @@ class App {
    * Go to success page.
    */
   goToSuccessPage = () => {
-    const queryString = window.location.search;
-    this.pushStateAndGoToTop(`/#success${queryString}`);
+    if (window.location.hash !== '#success') {
+      this.pushStateAndGoToTop(`/#success`);
+    }
     this.overviewPage.classList.add('hide');
     this.successPage.classList.remove('hide');
   };
@@ -232,7 +252,9 @@ class App {
    */
   goToOverviewPage = () => {
     const queryString = window.location.search;
-    this.pushStateAndGoToTop(`/${queryString}`);
+    if (window.location.hash !== '' && window.location.hash !== '#') {
+      this.pushStateAndGoToTop(`/${queryString}`);
+    }
     this.overviewPage.classList.remove('hide');
     this.successPage.classList.add('hide');
   };
@@ -244,6 +266,15 @@ class App {
   pushStateAndGoToTop = (url) => {
     window.history.pushState({}, '', url);
     window.scrollTo({top: 0, behavior: 'auto'});
+  };
+
+  /**
+   * Handle pop state / page change
+   */
+  handlePopState = () => {
+    this.showCorrectPage();
+    this.currentPageNumber = this.getCurrentPageNumber();
+    this.navigateToPage(this.currentPageNumber);
   };
 }
 
