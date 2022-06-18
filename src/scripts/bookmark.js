@@ -1,3 +1,5 @@
+import {Form} from './form';
+
 /**
  * Bookmark.
  */
@@ -8,9 +10,11 @@ class Bookmark {
    * @param {string} url URL of website to bookmark
    */
   constructor(name, url) {
+    this.bookmarkElement = null;
     this.name = name;
     this.url = url;
-    this.identifier = this.generateClassName();
+    this.identifier = this.generateUniqueIdentifier();
+    this.editForm = null;
     this.onRemove = () => {};
   }
 
@@ -19,7 +23,7 @@ class Bookmark {
    * @param {number} length Length of random string to be generated
    * @return {string}
    */
-  generateClassName = (length = 10) => {
+  generateUniqueIdentifier = (length = 10) => {
     let result = '';
     const characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -36,6 +40,7 @@ class Bookmark {
    */
   generateBookmarkListItem = () => {
     const bookmarkLink = document.createElement('a');
+    bookmarkLink.classList.add('bookmark-link');
     bookmarkLink.innerHTML = this.name;
     bookmarkLink.href = this.url;
     bookmarkLink.target = '_blank';
@@ -90,7 +95,6 @@ class Bookmark {
 
     const bookmarkEditForm = document.createElement('form');
     bookmarkEditForm.appendChild(bookmarkEditFormFieldset);
-    bookmarkEditForm.addEventListener('submit', this.handleEditSubmit);
     bookmarkEditForm.style.height = '0';
 
     const bookmarkListItem = document.createElement('li');
@@ -100,6 +104,8 @@ class Bookmark {
     bookmarkListItem.appendChild(bookmarkDeleteButton);
     bookmarkListItem.appendChild(bookmarkEditForm);
 
+    this.initialiseEditForm(bookmarkEditForm);
+
     return bookmarkListItem;
   };
 
@@ -108,7 +114,25 @@ class Bookmark {
    * @param {HTMLElement} element The element that bookmark is appended to
    */
   appendTo = (element) => {
-    element.appendChild(this.generateBookmarkListItem());
+    this.bookmarkElement = this.generateBookmarkListItem();
+    element.appendChild(this.bookmarkElement);
+  };
+
+  /**
+   * Initialise edit form interactions.
+   * @param {HTMLElement} element The form element
+   */
+  initialiseEditForm = (element) => {
+    this.editForm = new Form(element);
+    this.editForm.onSuccess = (data) => {
+      this.name = data.get('name');
+      this.url = data.get('url');
+
+      // Update DOM element to reflect changes
+      const link = this.bookmarkElement.querySelector('.bookmark-link');
+      link.innerHTML = this.name;
+      link.href = this.url;
+    };
   };
 
   /**
@@ -145,18 +169,16 @@ class Bookmark {
    * Show edit form for bookmark.
    */
   showEditPanel = () => {
-    const bookmarkDomElement = document.querySelector(`.${this.identifier}`);
     const fullHeight =
-      bookmarkDomElement.querySelector('fieldset').scrollHeight;
-    bookmarkDomElement.querySelector('form').style.height = `${fullHeight}px`;
+      this.bookmarkElement.querySelector('fieldset').scrollHeight;
+    this.bookmarkElement.querySelector('form').style.height = `${fullHeight}px`;
   };
 
   /**
    * Hide edit form for bookmark.
    */
   hideEditPanel = () => {
-    const bookmarkDomElement = document.querySelector(`.${this.identifier}`);
-    bookmarkDomElement.querySelector('form').style.height = '0';
+    this.bookmarkElement.querySelector('form').style.height = '0';
   };
 
   /**
@@ -164,7 +186,7 @@ class Bookmark {
    */
   remove = () => {
     this.onRemove();
-    document.querySelector(`.${this.identifier}`).remove();
+    this.bookmarkElement.remove();
   };
 }
 

@@ -15,6 +15,8 @@ class App {
     this.form = new Form(document.querySelector('.add-bookmark-form'));
     this.form.onSuccess = (data) => {
       this.createNewBookmark(data.get('name'), data.get('url'));
+      this.form.reset();
+      // TODO go to submit success page
     };
 
     for (const {name, url} of initialBookmarks) {

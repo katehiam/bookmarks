@@ -9,6 +9,7 @@ class Field {
    */
   constructor(fieldElement, errorElement) {
     this.field = fieldElement;
+    this.originalValue = this.field.value;
     this.errorElement = errorElement;
     this.errors = [];
 
@@ -31,10 +32,10 @@ class Field {
   };
 
   /**
-   * Clear errors and value of field.
+   * Reset errors and value of field.
    */
-  clear = () => {
-    this.field.value = '';
+  reset = () => {
+    this.field.value = this.originalValue;
     this.clearErrors();
   };
 

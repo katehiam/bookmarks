@@ -32,10 +32,15 @@ class Form {
 
     const formData = new FormData(this.form);
     this.onSuccess(formData);
+  };
+
+  /**
+   * Reset errors and value of field.
+   */
+  reset = () => {
     for (const field of this.fields) {
-      field.clear();
+      field.reset();
     }
-    // TODO go to submit success page
   };
 
   /**
