@@ -196,9 +196,7 @@ class App {
     this.pagination.innerHTML = '';
     this.makePagination();
     // Update url history
-    window.history.pushState(
-      {},
-      '',
+    this.pushStateAndGoToTop(
       `${
         this.currentPageNumber === 1 ? '/' : `/?page=${this.currentPageNumber}`
       }`,
@@ -221,7 +219,7 @@ class App {
    */
   goToSuccessPage = () => {
     const queryString = window.location.search;
-    window.history.pushState({}, '', `/#success${queryString}`);
+    this.pushStateAndGoToTop(`/#success${queryString}`);
     this.overviewPage.classList.add('hide');
     this.successPage.classList.remove('hide');
   };
@@ -231,9 +229,18 @@ class App {
    */
   goToOverviewPage = () => {
     const queryString = window.location.search;
-    window.history.pushState({}, '', `/${queryString}`);
+    this.pushStateAndGoToTop(`/${queryString}`);
     this.overviewPage.classList.remove('hide');
     this.successPage.classList.add('hide');
+  };
+
+  /**
+   * Push url to history and scroll to top of page
+   * @param {string} url Url to push to history
+   */
+  pushStateAndGoToTop = (url) => {
+    window.history.pushState({}, '', url);
+    window.scrollTo({top: 0, behavior: 'auto'});
   };
 }
 
