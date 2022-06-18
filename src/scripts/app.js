@@ -22,6 +22,8 @@ class App {
       const url = data.get('url');
       this.createNewBookmark(name, url);
       this.form.reset();
+
+      // Show correct details on success page
       this.successPage.querySelector('.success-bookmark-name').innerHTML = name;
       this.successPage.querySelector('.success-bookmark-url').innerHTML = url;
       this.goToSuccessPage();
