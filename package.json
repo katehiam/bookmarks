@@ -11,6 +11,7 @@
   "author": "Kate Scherz",
   "dependencies": {},
   "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
     "eslint": ">=5.16.0",
     "eslint-config-google": "^0.14.0",
