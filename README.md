@@ -78,9 +78,9 @@ The purpose of this document is to outline the design for the Bookmark Links web
 
 ### 3.1 Technology Stack
 
-View: HTML, Sass (compiled to CSS), JavaScript
-Bundler: Webpack
-Hosting: Netlify
+**View:** HTML, Sass (compiled to CSS), JavaScript  
+**Bundler:** Webpack  
+**Hosting:** Netlify
 
 ## 4. Technical Approach
 
