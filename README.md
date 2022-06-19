@@ -20,11 +20,9 @@ Maintains a list of bookmarks that the user is able to add/edit/delete.
 
 - `yarn start`
 
-
-
 ### Production
 
-> **URL:** [PROD URL]
+> **URL:** https://brilliant-pie-2ccdb7.netlify.app/
 
 ##### Initial Setup
 
@@ -34,4 +32,4 @@ Maintains a list of bookmarks that the user is able to add/edit/delete.
 
 ##### Deploy Process
 
-Push to `main` branch in repository. This is set to auto-trigger a deploy.
+Push to `main` branch in repository, then merge `main` into `prod`. `prod` is set to auto-trigger a deploy.
