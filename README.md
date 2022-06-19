@@ -62,6 +62,7 @@ The purpose of this document is to outline the design for the Bookmark Links web
 - Have browser history functionality when navigating pages.
 - Be simple to understand for the user.
 - Include a project README.
+- Clean up event listeners attached to elements when removing those elements from page.
 
 ### 2.3 Can Have
 
