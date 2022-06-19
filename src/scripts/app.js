@@ -2,7 +2,7 @@ import {Bookmark} from '@scripts/bookmark';
 import {Form} from '@scripts/form';
 import {PaginationLink} from './pagination-link';
 
-const BOOKMARKS_PER_PAGE = 5;
+const BOOKMARKS_PER_PAGE = 20;
 
 /**
  * Entry point.
